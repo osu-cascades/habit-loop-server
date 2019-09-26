@@ -10,6 +10,7 @@ const getConnection: () => Promise<Redis> = () =>
       password: process.env.REDIS_PASSWORD,
       port: 17149,
       connectTimeout: 2000,
+      maxRetriesPerRequest: 5,
     });
 
     redisClient.on('connect', () => {
