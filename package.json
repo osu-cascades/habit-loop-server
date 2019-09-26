@@ -2,10 +2,11 @@
   "name": "habit-loop-server",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "./src/app.ts",
   "scripts": {
-    "start": "set NODE_ENV=test&& node app.js",
-    "test": "export NODE_ENV=test && export NODE_PATH=$(pwd)/node_modules && find test -name '*_test.js' | xargs nyc --reporter=lcov _mocha"
+    "start": "set NODE_ENV=test && node src/app.ts",
+    "test": "export NODE_ENV=test && export NODE_PATH=$(pwd)/node_modules && find test -name '*_test.js' | xargs nyc --reporter=lcov _mocha",
+    "tsc": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +28,17 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.31",
+    "@types/bcrypt": "^3.0.0",
+    "@types/graphql": "^14.5.0",
+    "@types/ioredis": "^4.0.15",
+    "@types/jsonwebtoken": "^8.3.3",
+    "@types/lodash": "^4.14.137",
+    "@types/node": "^12.7.2",
+    "@types/node-fetch": "^2.5.2",
+    "@types/pino": "^5.8.10",
+    "@types/uuid": "^3.4.5",
+    "@typescript-eslint/eslint-plugin": "^2.3.1",
     "chai": "^4.2.0",
     "eslint": "^5.12.0",
     "eslint-config-airbnb-base": "^13.1.0",
@@ -34,32 +46,27 @@
     "graphql-tools": "^4.0.3",
     "jest": "^24.7.1",
     "jest-cli": "^24.7.1",
-    "link-module-alias": "^1.1.6",
     "mocha": "^5.2.0",
     "nyc": "^13.1.0",
     "pino-pretty": "^2.6.0",
+    "prettier": "^1.18.2",
     "serverless-dynamodb-local": "^0.2.37",
     "serverless-offline": "^3.31.3",
+    "serverless-plugin-typescript": "^1.1.9",
     "sinon": "^7.1.1",
-    "supertest": "^3.3.0"
-  },
-  "_moduleAliases": {
-    "@lib": "lib",
-    "@userModel": "model/User.js",
-    "@habitModel": "model/Habit.js"
+    "supertest": "^3.3.0",
+    "typescript": "^3.6.3"
   },
   "jest": {
     "testEnvironment": "node",
     "testPathIgnorePatterns": [
       "/node_modules/",
+      "./build",
       "./dist"
     ],
     "coverageReporters": [
       "lcov",
       "html"
-    ],
-    "moduleNameMapper": {
-      "^mongoose$": "<rootDir>/node_modules/mongoose"
-    }
+    ]
   }
 }

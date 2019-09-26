@@ -1,0 +1,16 @@
+{
+    "editor.formatOnSave": true,
+    "editor.rulers": [
+        160
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "rest-client.environmentVariables": {
+        "local": {
+            "habit-loop-server": "http://localhost:3000/graphql",
+
+        },
+        "production": {
+            "habit-loop-server": "https://8tntvz34m4.execute-api.us-east-1.amazonaws.com/qa/graphql",
+        }
+    }
+}
