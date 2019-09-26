@@ -4,7 +4,7 @@ import uuidv4 from 'uuid/v4';
 import _ from 'lodash';
 import UserModel from './User';
 import { DynamoDB } from 'aws-sdk';
-import { UserDetails } from 'api/types';
+import { UserDetails } from '@src/api/types';
 
 // https://www.dynamodbguide.com/leaderboard-write-sharding/
 class StreakModel extends UserModel {
@@ -58,9 +58,9 @@ class StreakModel extends UserModel {
    * the expiration to the end of the next day.
    *
    * @param { String } user_id User identification as the primary key in the streak table
-   * @return { Object } Updated Values
+   * @return Updated Values
    */
-  async upsert(user_id: string, username: string): object {
+  async upsert(user_id: string, username: string) {
     // if creation succeeds we return else the row needs to be updated.
     let userStreakExists;
 
@@ -75,6 +75,7 @@ class StreakModel extends UserModel {
           .add(1, 'day')
           .endOf('day')
           .unix(),
+        created_at: moment().toString(),
       };
 
       userStreakExists = await this.getUserStreak(user_id);
@@ -90,25 +91,27 @@ class StreakModel extends UserModel {
 
     Pino().info('Row already exists, will update streak now.');
 
-    const params = {
-      TableName: this.tableName,
-      Key: {
-        user_id,
-        item_id: userStreakExists.item_id,
-      },
-      UpdateExpression: 'SET score = score + :incr, expiration = :expiration, streak = :streak',
-      ExpressionAttributeValues: {
-        ':incr': 1,
-        ':expiration': moment()
-          .add(1, 'day')
-          .endOf('day')
-          .unix(),
-        ':streak': 'STREAK',
-      },
-      ReturnValues: 'UPDATED_NEW',
-    };
+    if (userStreakExists && userStreakExists.Items) {
+      const params = {
+        TableName: this.tableName,
+        Key: {
+          user_id,
+          item_id: userStreakExists.Items[0].item_id || null,
+        },
+        UpdateExpression: 'SET score = score + :incr, expiration = :expiration, streak = :streak',
+        ExpressionAttributeValues: {
+          ':incr': 1,
+          ':expiration': moment()
+            .add(1, 'day')
+            .endOf('day')
+            .unix(),
+          ':streak': 'STREAK',
+        },
+        ReturnValues: 'UPDATED_NEW',
+      };
 
-    return this.docClient.update(params).promise();
+      return this.docClient.update(params).promise();
+    }
   }
 
   getTopStreaks(Limit = 10) {

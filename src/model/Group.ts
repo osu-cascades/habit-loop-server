@@ -1,5 +1,5 @@
 import User from './User';
-import { DBModel } from 'api/types';
+import { DBModel, GroupDetails } from '@src/api/types';
 import { DynamoDB } from 'aws-sdk';
 
 const removeLastComma = (str: string) => str.replace(/,(\s+)?$/, '');
@@ -18,9 +18,6 @@ const removeLastComma = (str: string) => str.replace(/,(\s+)?$/, '');
 // };
 
 class Group extends User implements DBModel {
-  tableName: string | undefined;
-  docClient: DynamoDB.DocumentClient | undefined;
-
   /**
    * Adds two rows: one for the user to specify the group
    *                two for the group itself and to specify the user being the owner
@@ -59,7 +56,7 @@ class Group extends User implements DBModel {
     return this.docClient.put(params).promise();
   }
 
-  getUserGroups(user_id) {
+  getUserGroups(user_id: string) {
     const params = {
       TableName: this.tableName,
       KeyConditionExpression: 'user_id = :u AND begins_with(item_id, :g)',
@@ -72,7 +69,7 @@ class Group extends User implements DBModel {
     return this.docClient.query(params).promise();
   }
 
-  getUsersInGroup(group) {
+  getUsersInGroup(group: GroupDetails) {
     const params = {
       TableName: this.tableName,
       IndexName: 'ItemIndex',

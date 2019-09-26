@@ -12,7 +12,7 @@ import StreakModel from '../model/Streak';
 import RedisModel from '../model/Redis';
 import GroupModel from '../model/Group';
 
-const getAuth = headers => {
+const getAuth = (headers: any) => {
   const token = _.get(headers, 'Authorization', null);
   if (_.isEmpty(token)) {
     return null;
@@ -43,11 +43,11 @@ export default {
       Redis: RedisModel,
     };
   },
-  formatResponse: response => {
+  formatResponse: (response: any) => {
     Pino().info(response);
     return response;
   },
-  formatError: error => {
+  formatError: (error: any) => {
     Pino().info(error);
     return error;
   },

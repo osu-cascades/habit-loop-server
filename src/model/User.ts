@@ -1,5 +1,6 @@
 import { DynamoDB } from 'aws-sdk';
-import { UserDetails, DBModel } from 'api/types';
+import { UserDetails, DBModel, StreakDetails } from '@src/api/types';
+import AWS from 'aws-sdk';
 
 class UserModel implements DBModel {
   tableName: string;
@@ -13,6 +14,7 @@ class UserModel implements DBModel {
     if (process.env.NODE_ENV === 'test') {
       AWS.config.update({
         region: 'us-east-1',
+        // @ts-ignore
         endpoint: 'http://localhost:8000',
       });
     }
@@ -82,7 +84,7 @@ class UserModel implements DBModel {
    * @param { Object } user Object containing details of the new User
    * @return return response from dyanmo of user creation
    */
-  create(user: UserDetails) {
+  create(user: UserDetails | StreakDetails) {
     const params = {
       TableName: this.tableName,
       Item: user,

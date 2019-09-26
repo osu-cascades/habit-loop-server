@@ -1,18 +1,22 @@
 import { DynamoDB } from 'aws-sdk';
 
-interface UserDetails {
+interface Base {
+  created_at: string;
+  item_id: string;
+}
+
+interface UserDetails extends Base {
   user_id: string;
   username: string;
   email: string;
   password: string;
-  created_at: string;
   role: Array<string>;
   manager?: string;
   group?: object;
   streak_id: string;
 }
 
-interface Group {
+interface GroupDetails extends Base {
   group_name: string;
   users: object;
   owner: boolean;
@@ -20,14 +24,16 @@ interface Group {
   group_sort: string;
 }
 
-interface Streak {
-  item_id: string;
+interface StreakDetails extends Base {
   score: number;
   streak: string;
-  expiration: string;
+  expiration: number;
+  user_id: string;
+  username: string;
 }
 
-interface Habit {
+interface HabitDetails extends Base {
+  user_id: string;
   habit_name: string;
   type: string;
   notify: object;
@@ -36,12 +42,10 @@ interface Habit {
   recurrence: string;
 }
 
-interface Base {
-  created_at: string;
+interface PushNotification {
   push_token: string;
-  timestamp: string;
   reminder: string;
-  item_id: string;
+  timestamp: string;
 }
 
 interface DBModel {

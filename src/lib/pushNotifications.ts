@@ -3,6 +3,7 @@ import _ from 'lodash';
 import Pino from 'pino';
 
 import UserModel from '../model/User';
+import { Callback, Context } from 'aws-lambda';
 
 const logger = Pino();
 
@@ -10,11 +11,15 @@ const sendPushNotification = async () => {
   const expo = new Expo();
   const user = new UserModel();
 
-  const users = await user.getAllUsers();
-  const userPushTokens = _.compact(users.Items.map(u => u.push_token));
+  const users = await user.getAll();
+  let userPushTokens = [];
 
-  const messages = [];
-  _.forEach(userPushTokens, token => {
+  if (users.Items) {
+    userPushTokens = _.compact(users.Items.map(u => u.push_token));
+  }
+
+  const messages: any = [];
+  _.forEach(userPushTokens, (token: any) => {
     if (!Expo.isExpoPushToken(token)) {
       logger.info(`Push token ${token} is not a valid Expo push token`);
     } else {
@@ -41,9 +46,8 @@ const sendPushNotification = async () => {
   logger.info(`Succesfully sent notifcations to ${userPushTokens}`);
 };
 
-// Check users habit
 export default {
-  handler: (event, context, callback) => {
+  handler: (event: any, context: Context, callback: Callback) => {
     sendPushNotification();
   },
 };

@@ -12,4 +12,4 @@ const handler = {
   }),
 };
 
-export default handler;
+export const graphql = handler.graphql;

@@ -48,7 +48,7 @@ export default async () => {
         return [...habits[0][1], ...habits[1][1]];
       },
 
-      completeHabit: (user_id, habit_id, recurrence) => {
+      completeHabit: (user_id: string, habit_id: string, recurrence: string) => {
         if (recurrence === 'DAILY') {
           client.rpush(`${user_id}|DAILY`, habit_id);
 
@@ -75,7 +75,7 @@ export default async () => {
         return 0;
       },
 
-      completedHabitToday: user_id => client.exists(`${user_id}|DAILY`),
+      completedHabitToday: (user_id: string) => client.exists(`${user_id}|DAILY`),
     },
   };
 };
