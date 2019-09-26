@@ -1,4 +1,6 @@
-export interface User {
+import { DynamoDB } from 'aws-sdk';
+
+interface UserDetails {
     user_id: string;
     username: string;
     email: string;
@@ -7,9 +9,10 @@ export interface User {
     role: Array<string>;
     manager?: string;
     group?: object;
+    streak_id: string;
 }
 
-export interface Group {
+interface Group {
     group_name: string;
     users: object;
     owner: boolean;
@@ -17,13 +20,14 @@ export interface Group {
     group_sort: string;
 }
 
-export interface Streak {
+interface Streak {
+    item_id: string;
     score: number;
     streak: string;
     expiration: string;
 }
 
-export interface Habit {
+interface Habit {
     habit_name: string;
     type: string;
     notify: object;
@@ -32,7 +36,7 @@ export interface Habit {
     recurrence: string;
 }
   
-export interface Base {
+interface Base {
     created_at: string;
     push_token: string;
     timestamp: string;
@@ -40,7 +44,7 @@ export interface Base {
     item_id: string;
 }
 
-export interface DBModel {
-    tableName: string | undefined;
+interface DBModel {
+    tableName: string;
     docClient: DynamoDB.DocumentClient;
-  }
+}

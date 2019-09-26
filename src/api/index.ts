@@ -1,4 +1,4 @@
-import * as Pino from 'pino';
+import Pino from 'pino';
 import _ from 'lodash';
 import jwt  from 'jsonwebtoken';
 

@@ -1,13 +1,12 @@
 import { DynamoDB } from 'aws-sdk';
-import { DBModel } from 'api/types';
-import { GetItemInput } from 'aws-sdk/clients/dynamodb';
+import { UserDetails, DBModel } from 'api/types';
 
-class User implements DBModel {
-  tableName: string | undefined;
-  docClient?: DynamoDB.DocumentClient
+class UserModel implements DBModel {
+  tableName: string;
+  docClient: DynamoDB.DocumentClient;
 
   constructor() {
-    this.tableName = process.env.USER_TABLE;
+    this.tableName = process.env.USER_TABLE || '';
 
     // Set AWS configs for tests if we have a local db
     // Might be able to remove this with servless local dynamodb plugin
@@ -26,10 +25,9 @@ class User implements DBModel {
    *
    * @param { string } user_id User identification as the primary key in the dynamo table
    * @param { String } created_at one of the keys of the dynamo table
-   * @return { Object } User object
    */
   getById(user_id: string, created_at: string) {
-    const params: GetItemInput = {
+    const params = {
       TableName: this.tableName,
       Key: {
         user_id,
@@ -40,7 +38,7 @@ class User implements DBModel {
     return this.docClient.get(params).promise();
   }
 
-  getByIdOnly(user_id) {
+  getByIdOnly(user_id: string) {
     const params = {
       TableName: this.tableName,
       KeyConditionExpression: '#user = :user',
@@ -60,7 +58,7 @@ class User implements DBModel {
    *
    * @param { String } user_id User identification as the primary key in the dynamo table
    * @param { String } created_at one of the keys of the dynamo table
-   * @return { Object } User object
+   * @return dynamo response containing user
    */
   getByEmail(email: string) {
     const params = {
@@ -82,11 +80,9 @@ class User implements DBModel {
    * Get the list of Users for a specific user
    *
    * @param { Object } user Object containing details of the new User
-   * @return { Array } Returns array of userUsers
+   * @return return response from dyanmo of user creation
    */
-  create(user) {
-    this.validator.check(user);
-    
+  create(user: UserDetails) {    
     const params = {
       TableName: this.tableName,
       Item: user,
@@ -103,7 +99,7 @@ class User implements DBModel {
    * @param reminder when to send user a reminder
    * @return Promise containing dynamodb action
    */
-  updatePushNotification({ user_id, created_at }, push_token, reminder = 'MORNING') {
+  updatePushNotification({ user_id, created_at }: { user_id: string, created_at: string}, push_token: string, reminder = 'MORNING') {
     const params = {
       TableName: this.tableName,
       IndexName: 'PushNotificationIndex',
@@ -130,7 +126,7 @@ class User implements DBModel {
     return this.docClient.scan(params).promise();
   }
 
-  setPushNotification({ user_id, created_at }, set) {
+  setPushNotification({ user_id, created_at }: { user_id: string, created_at: string}, set: any) {
     const params = {
       TableName: this.tableName,
       Key: {
@@ -148,4 +144,4 @@ class User implements DBModel {
   }
 }
 
-export default User;
+export default UserModel;

@@ -2,17 +2,16 @@ import moment from 'moment';
 import Pino from 'pino';
 import uuidv4 from 'uuid/v4';
 import _ from 'lodash';
+import UserModel from './User';
+import { DynamoDB } from 'aws-sdk';
+import { UserDetails } from 'api/types';
 
-import User from './User';
 
-interface Streak {
-  getUserStreak: () => 
-}
 
 // https://www.dynamodbguide.com/leaderboard-write-sharding/
-class Streak extends User {
-  getUserStreak(user_id: string): object {
-    const params = {
+class StreakModel extends UserModel {
+  getUserStreak(user_id: string) {
+    const params: DynamoDB.DocumentClient.QueryInput = {
       TableName: this.tableName,
       KeyConditionExpression: 'user_id = :u AND begins_with(item_id, :s)',
       ExpressionAttributeValues: {
@@ -24,7 +23,7 @@ class Streak extends User {
     return this.docClient.query(params).promise();
   }
 
-  async getUsers(users) {
+  async getUsers(users: UserDetails[]) {
     const keys = _.map(users, user => ({
         user_id: user.user_id,
         item_id: user.streak_id,
@@ -32,7 +31,7 @@ class Streak extends User {
 
     const params = {
       RequestItems: {
-        [this.tableName]: {
+        [`${this.tableName}`]: {
           Keys: keys,
         },
       },
@@ -42,15 +41,19 @@ class Streak extends User {
       Responses: table,
     } = await this.docClient.batchGet(params).promise();
 
-    const streaks = table[`${this.tableName}`];
+    if (table) {
+      const streaks = table[`${this.tableName}`];
 
-    return _(streaks)
-      .map(streak => ({
-          score: streak.score,
-          username: streak.username,
-      }))
-      .orderBy(streak => streak.score, ['desc'])
-      .value();
+      return _(streaks)
+        .map(streak => ({
+            score: streak.score,
+            username: streak.username,
+        }))
+        .orderBy(streak => streak.score, ['desc'])
+        .value();
+    } else {
+      return [];
+    }
   }
 
   /**
@@ -61,9 +64,10 @@ class Streak extends User {
    * @param { String } user_id User identification as the primary key in the streak table
    * @return { Object } Updated Values
    */
-  async upsert(user_id, username) {
+  async upsert(user_id: string, username: string): object {
     // if creation succeeds we return else the row needs to be updated.
     let userStreakExists;
+
     try {
       const createParams = {
         user_id,
@@ -76,7 +80,7 @@ class Streak extends User {
 
       userStreakExists = await this.getUserStreak(user_id);
 
-      if (_.isEmpty(userStreakExists.Items)) {
+      if (_.isEmpty(userStreakExists)) {
         const results = await this.create(createParams);
         return results;
       }
@@ -84,13 +88,14 @@ class Streak extends User {
       Pino().error(`Unable to update user streak for user ${user_id} with err ${err}`);
       throw err;
     }
+
     Pino().info('Row already exists, will update streak now.');
 
     const params = {
         TableName: this.tableName,
         Key: { 
           user_id,
-          item_id: userStreakExists.Items[0].item_id,
+          item_id: userStreakExists.item_id,
         },
         UpdateExpression: 'SET score = score + :incr, expiration = :expiration, streak = :streak',
         ExpressionAttributeValues: {
@@ -120,4 +125,4 @@ class Streak extends User {
   }
 }
 
-export default Streak;
+export default StreakModel;
