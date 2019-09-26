@@ -9,7 +9,7 @@ const resolver: IResolvers = {
         throw new Error('Unauthorized user!');
       }
 
-      let habits;
+      let habits = [];
       let RedisClient;
 
       try {

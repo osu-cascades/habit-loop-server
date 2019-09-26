@@ -12,6 +12,11 @@ import StreakModel from '../model/Streak';
 import RedisModel from '../model/Redis';
 import GroupModel from '../model/Group';
 
+/**
+ * Parses auth token from header using supersecret JWT secret
+ * (Will replace jwt secret eventually)
+ * @param headers
+ */
 const getAuth = (headers: any) => {
   const token = _.get(headers, 'Authorization', null);
   if (_.isEmpty(token)) {
