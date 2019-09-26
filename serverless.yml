@@ -1,4 +1,4 @@
-service: expo-app-api
+service: habit-loop
 
 provider:
   name: aws
@@ -24,9 +24,9 @@ provider:
         - dynamodb:UpdateTable
         - dynamodb:BatchWriteItem
         - dynamodb:DescribeTimeToLive
-      Resource: 
-        - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.config.USER_TABLE}"
-        - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.config.USER_TABLE}/index/*"
+      Resource:
+        - 'arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.config.USER_TABLE}'
+        - 'arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.config.USER_TABLE}/index/*'
 
 functions:
   graphql:
@@ -36,7 +36,6 @@ functions:
           path: graphql
           method: post
           cors: true
-
   # pushNotifications:
   #   handler: lib/pushNotifications.handler
   #   events:
@@ -51,9 +50,8 @@ functions:
 # order matters here for plugins
 plugins:
   - serverless-plugin-typescript
-# - serverless-dynamodb-local
+  # - serverless-dynamodb-local
   - serverless-offline
-  
 
 resources:
   - ${file(resources/dynamo/UserTable.yml)}
@@ -62,11 +60,11 @@ custom:
   config:
     USER_TABLE: user-records-${self:provider.stage}
   dynamodb:
-      start:
-        migrate: false
-        seed: false
-      seed:
-        test:
-          sources:
-            - table: user-records-dev-2
-              sources: [./resources/test_data.json]
+    start:
+      migrate: false
+      seed: false
+    seed:
+      test:
+        sources:
+          - table: user-records-dev-2
+            sources: [./resources/test_data.json]

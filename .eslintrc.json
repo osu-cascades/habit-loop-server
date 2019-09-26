@@ -1,6 +1,6 @@
 {
     "extends": "airbnb-base",
-    "rules":{
+    "rules": {
         "linebreak-style": 0,
         "no-tabs": 0,
         "camelcase": 0,
@@ -9,7 +9,7 @@
         "indent": 0
     },
     "plugins": [
-        "@typescript-eslint", //
+        "@typescript-eslint",
         "eslint-plugin-prettier"
     ],
     "parser": "@typescript-eslint/parser"
