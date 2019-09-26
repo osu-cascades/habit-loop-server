@@ -1,19 +1,17 @@
-const moment = require('moment');
-const logger = require('pino')();
-const uuidv4 = require('uuid/v4');
-const _ = require('lodash');
+import moment from 'moment';
+import Pino from 'pino';
+import uuidv4 from 'uuid/v4';
+import _ from 'lodash';
 
-const User = require('./User');
+import User from './User';
+
+interface Streak {
+  getUserStreak: () => 
+}
 
 // https://www.dynamodbguide.com/leaderboard-write-sharding/
 class Streak extends User {
-  /**
-   * Get streak for a user
-   *
-   * @param { String } user_id User identification as the primary key in the dynamo table
-   * @return { Object } Streak object
-   */
-  getUserStreak(user_id) {
+  getUserStreak(user_id: string): object {
     const params = {
       TableName: this.tableName,
       KeyConditionExpression: 'user_id = :u AND begins_with(item_id, :s)',
@@ -83,10 +81,10 @@ class Streak extends User {
         return results;
       }
     } catch (err) {
-      logger.error(`Unable to update user streak for user ${user_id} with err ${err}`);
+      Pino().error(`Unable to update user streak for user ${user_id} with err ${err}`);
       throw err;
     }
-    logger.info('Row already exists, will update streak now.');
+    Pino().info('Row already exists, will update streak now.');
 
     const params = {
         TableName: this.tableName,
@@ -122,4 +120,4 @@ class Streak extends User {
   }
 }
 
-module.exports = Streak;
+export default Streak;

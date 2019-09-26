@@ -1,5 +1,5 @@
-const _ = require('lodash');
-const User = require('./User');
+import _ from 'lodash';
+import User from './User';
 
 // item contains name, type, habit_id, user_id, created_at
 const createUpdate = (item) => {
@@ -126,4 +126,4 @@ class Habit extends User {
   }
 }
 
-module.exports = Habit;
+export default Habit;

@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-lambda');
+import { gql } from 'apollo-server-lambda';
 
 const habitDefs = gql`
 
@@ -57,4 +57,4 @@ const habitDefs = gql`
 	}
 `;
 
-module.exports = habitDefs;
+export default habitDefs;

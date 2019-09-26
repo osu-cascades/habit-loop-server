@@ -1,11 +1,9 @@
-const _ = require('lodash');
-const uuidv4 = require('uuid/v4');
+import _ from'lodash';
+import uuidv4 from'uuid/v4';
+import { IResolvers } from 'apollo-server-lambda';
 
-const resolver = {
+const resolver: IResolvers = {
     Query: {
-      // get all the habits for a user
-      // requires that the user_id matches the logged in user
-      
       async getHabits(instance, args, ctx) {
         if (!ctx.user) {
           throw new Error('Unauthorized user!');
@@ -26,7 +24,7 @@ const resolver = {
           RedisClient = await ctx.Redis();
           const completedHabits = await RedisClient.streak.getCompletedHabits(ctx.user.user_id);
 
-          habits = _.map(habits, habit => {
+          habits = _.map(habits, (habit) => {
             if (completedHabits.includes(habit.item_id)) {
               return Object.assign(habit, { completed_today: true });
             } return habit;
@@ -150,4 +148,4 @@ const resolver = {
     },
 };
 
-module.exports = resolver;
+export default resolver;

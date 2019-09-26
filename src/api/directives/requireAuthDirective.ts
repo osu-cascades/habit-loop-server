@@ -1,14 +1,15 @@
-const {
+import {
   SchemaDirectiveVisitor,
-  AuthenticationError,
-} = require('apollo-server-lambda');
-const { defaultFieldResolver } = require('graphql');
+  AuthenticationError
+} from 'apollo-server-lambda';
+
+import { defaultFieldResolver } from 'graphql'
 
 class RequireAuthDirective extends SchemaDirectiveVisitor {
-  visitFieldDefinition(field) {
+  visitFieldDefinition(field: any) {
     const { resolve = defaultFieldResolver } = field;
     const { role } = this.args;
-    field.resolve = async (...args) => {
+    field.resolve = async (...args: any) => {
       const [, , ctx] = args;
       if (ctx && ctx.user) {
         if (role && (!ctx.user.role || !ctx.user.role.includes(role))) {
@@ -27,4 +28,4 @@ class RequireAuthDirective extends SchemaDirectiveVisitor {
   }
 }
 
-module.exports = RequireAuthDirective;
+export default RequireAuthDirective;

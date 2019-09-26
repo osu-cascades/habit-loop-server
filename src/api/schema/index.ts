@@ -1,6 +1,6 @@
-const { gql } = require('apollo-server-lambda');
-const habitDefs = require('./habit');
-const userDefs = require('./user');
+import { gql } from 'apollo-server-lambda';
+import habitDefs from './habit';
+import userDefs from './user';
 
 const typeDefs = gql`
 		directive @requireAuth(
@@ -32,4 +32,4 @@ const typeDefs = gql`
     ${userDefs}
 `;
 
-module.exports = typeDefs;
+export default typeDefs;

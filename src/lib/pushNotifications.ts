@@ -1,8 +1,10 @@
-const { Expo } = require('expo-server-sdk');
-const _ = require('lodash');
-const logger = require('pino')();
+import { Expo } from 'expo-server-sdk';
+import _ from 'lodash';
+import Pino from 'pino';
 
-const UserModel = require('../model/User');
+import UserModel from '../model/User';
+
+const logger = Pino();
 
 const sendPushNotification = async () => {
   const expo = new Expo();
@@ -42,6 +44,8 @@ const sendPushNotification = async () => {
 
 
 // Check users habit
-module.exports.handler = (event, context, callback) => {
-  sendPushNotification();
-};
+export default {
+  handler: (event, context, callback) => {
+    sendPushNotification();
+  }
+}

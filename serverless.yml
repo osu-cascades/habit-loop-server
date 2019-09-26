@@ -1,17 +1,17 @@
-service: habit-api 
+service: expo-app-api
 
 provider:
   name: aws
-  runtime: nodejs8.10
-  stage: dev
+  runtime: nodejs10.x
+  stage: qa
   region: us-east-1
   tracing:
     lambda: true
   environment:
     NODE_ENV: ${env:NODE_ENV}
     USER_TABLE: ${self:custom.config.USER_TABLE}
-    REDIS_HOST: "redis-17149.c14.us-east-1-2.ec2.cloud.redislabs.com"
-    REDIS_PASSWORD: ${ssm:habit_loop_redis_password}
+    REDIS_HOST: ${env:REDIS_HOST}
+    REDIS_PASSWORD: ${env:REDIS_SECRET}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -37,20 +37,23 @@ functions:
           method: post
           cors: true
 
-  pushNotifications:
-    handler: lib/pushNotifications.handler
-    events:
-      - schedule:
-          name: push-notification-handler
-          description: 'Sends push notification reminding user to train.'
-          rate: rate(10 days)
-      - http:
-          path: notification
-          method: get
+  # pushNotifications:
+  #   handler: lib/pushNotifications.handler
+  #   events:
+  #     - schedule:
+  #         name: push-notification-handler
+  #         description: 'Sends push notification reminding user to train.'
+  #         rate: rate(10 days)
+  #     - http:
+  #         path: notification
+  #         method: get
 
+# order matters here for plugins
 plugins:
-  # - serverless-dynamodb-local
+  - serverless-plugin-typescript
+# - serverless-dynamodb-local
   - serverless-offline
+  
 
 resources:
   - ${file(resources/dynamo/UserTable.yml)}

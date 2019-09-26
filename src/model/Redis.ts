@@ -1,11 +1,11 @@
-const Redis = require('ioredis');
-const logger = require('pino')();
-const moment = require('moment');
-const _ = require('lodash');
+import createConnection, { Redis } from 'ioredis';
+import Pino from 'pino';
+import moment from 'moment';
+import _ from 'lodash';
 
-const getConnection = () => (
+const getConnection: () => Promise<Redis> = () => (
     new Promise((resolve, reject) => {
-        const redisClient = new Redis({
+        const redisClient = new createConnection({
             host: process.env.REDIS_HOST,
             password: process.env.REDIS_PASSWORD,
             port: 17149,
@@ -13,20 +13,20 @@ const getConnection = () => (
         });
 
         redisClient.on('connect', () => {
-            logger.info(`Redis client connected to host ${process.env.REDIS_HOST}`);
+            Pino().info(`Redis client connected to host ${process.env.REDIS_HOST}`);
         });
         redisClient.on('error', (err) => reject(err));
         
         redisClient.on('close', () => {
-            logger.info('Closing connection!');
+            Pino().info('Closing connection!');
         });
 
         return resolve(redisClient);
     })
 );
 
-module.exports = async () => {
-    const client = await getConnection();
+export default async () => {
+    const client: Redis = await getConnection();
 
     return {
         getConnection: async () => {
@@ -38,7 +38,7 @@ module.exports = async () => {
         disconnect: () => client.quit(),
 
         streak: {
-            getCompletedHabits: async (user_id) => {
+            getCompletedHabits: async (user_id: string) => {
                 const habits = await client.multi()
                     .lrange(`${user_id}|DAILY`, 0, -1)
                     .lrange(`${user_id}|WEEKLY`, 0, -1)

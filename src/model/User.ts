@@ -1,7 +1,11 @@
-const AWS = require('aws-sdk');
-const UserValidator = require('./validators/User');
+import { DynamoDB } from 'aws-sdk';
+import { DBModel } from 'api/types';
+import { GetItemInput } from 'aws-sdk/clients/dynamodb';
 
-class User {
+class User implements DBModel {
+  tableName: string | undefined;
+  docClient?: DynamoDB.DocumentClient
+
   constructor() {
     this.tableName = process.env.USER_TABLE;
 
@@ -14,19 +18,18 @@ class User {
       });
     }
 
-    this.docClient = new AWS.DynamoDB.DocumentClient();
-    this.validator = new UserValidator();
+    this.docClient = new DynamoDB.DocumentClient();
   }
 
   /**
    * Get specific User for a user
    *
-   * @param { String } user_id User identification as the primary key in the dynamo table
+   * @param { string } user_id User identification as the primary key in the dynamo table
    * @param { String } created_at one of the keys of the dynamo table
    * @return { Object } User object
    */
-  getById(user_id, created_at) {
-    const params = {
+  getById(user_id: string, created_at: string) {
+    const params: GetItemInput = {
       TableName: this.tableName,
       Key: {
         user_id,
@@ -37,13 +40,6 @@ class User {
     return this.docClient.get(params).promise();
   }
 
-  /**
-   * Get specific User for a user
-   *
-   * @param { String } user_id User identification as the primary key in the dynamo table
-   * @param { String } created_at one of the keys of the dynamo table
-   * @return { Object } User object
-   */
   getByIdOnly(user_id) {
     const params = {
       TableName: this.tableName,
@@ -66,7 +62,7 @@ class User {
    * @param { String } created_at one of the keys of the dynamo table
    * @return { Object } User object
    */
-  getByEmail(email) {
+  getByEmail(email: string) {
     const params = {
       TableName: this.tableName,
       IndexName: 'EmailIndex',
@@ -152,4 +148,4 @@ class User {
   }
 }
 
-module.exports = User;
+export default User;
