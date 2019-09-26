@@ -32,13 +32,13 @@ docker run -p 8000:8000 amazon/dynamodb-local
 
 Otherwise running dynamodb will require Java.
 
-## Redis
+#### Redis
 
 This service also uses redis which will need to be setup as well.
 
 Redis Labs is a good free way to get a redis instance up and running. Just sign up [here](https://redislabs.com/) and they'll walk you through the process pretty easily. What you'll need is the host and password. Those can be set in the environment whenever it should be deployed or started locally.
 
-## AWS Credentials
+#### AWS Credentials
 
 To deploy the server in AWS and receive a url that anyone can access, you'll need aws credentials from IAM.
 
@@ -50,7 +50,7 @@ More explicit documentation on configuring secrets with AWS described in the [se
 
 Remember to NEVER COMMIT THEM TO THE REPO.
 
-### Deploying
+## Deploying
 
 To deploy to your AWS account all you have to do is run:
 
@@ -62,7 +62,7 @@ Make sure the AWS credentials are set up properly if you get errors.
 
 A common error I've run into is that deploying on macOS fails while deploying on a windows machine works. There's some weird stuff going on with bcrypt binaries or something but just mentioning it here in case the deploy doesn't work.
 
-### Running Locally
+## Running Locally
 
 Once you clone this git repository, navigate to the containing folder and run
 
@@ -72,7 +72,7 @@ NODE_ENV=dev serverless offline start
 
 You can then visit the graphql playground at localhost:3000/playground
 
-### Testing
+## Testing
 
 To test the server run the following command:
 
@@ -84,7 +84,7 @@ The http file in `src/test` uses the rest client in vscode available [here](http
 
 The extension now supports graphQL queries so it's really easy to test if the lambda is running in AWS and to get some quick debugging done.
 
-### Debugging
+## Debugging
 
 Sometimes the logs are responses are not very clear when hitting the endpoints from the app or manually. You can pass a graphQL query directly into the lambda through AWS.
 
