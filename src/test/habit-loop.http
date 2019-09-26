@@ -1,3 +1,7 @@
+### 
+# Edit host variables in .vscode/settings.json 
+# Switch environments from toolbar at bottom
+
 ### login test
 # @name login
 POST {{habit-loop-server}}
