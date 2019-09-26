@@ -1,23 +1,19 @@
-AWSTemplateFormatVersion: "2010-09-09"
-Description: "Template to create resources for the habit loop"
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Template to create resources for the habit loop'
 Resources:
   HabitDynamoDBTable:
-    Type: "AWS::DynamoDB::Table"
+    Type: 'AWS::DynamoDB::Table'
     Properties:
       AttributeDefinitions:
-        -
-          AttributeName: habit_id
+        - AttributeName: habit_id
           AttributeType: S
-        -
-          AttributeName: created_at
+        - AttributeName: created_at
           AttributeType: S
 
       KeySchema:
-        -
-          AttributeName: habit_id
+        - AttributeName: habit_id
           KeyType: HASH
-        -
-          AttributeName: created_at
+        - AttributeName: created_at
           KeyType: RANGE
 
       ProvisionedThroughput:
@@ -27,46 +23,38 @@ Resources:
       TableName: habit-records
 
   UserDynamoDBTable:
-    Type: "AWS::DynamoDB::Table"
+    Type: 'AWS::DynamoDB::Table'
     Properties:
       AttributeDefinitions:
-        -
-          AttributeName: user_id
+        - AttributeName: user_id
           AttributeType: S
-        -
-          AttributeName: created_at
+        - AttributeName: created_at
           AttributeType: S
-        -
-          AttributeName: email
+        - AttributeName: email
           AttributeType: S
 
       KeySchema:
-        -
-          AttributeName: user_id
+        - AttributeName: user_id
           KeyType: HASH
-        -
-          AttributeName: created_at
+        - AttributeName: created_at
           KeyType: RANGE
 
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
-      
+
       GlobalSecondaryIndexes:
-        -
-          IndexName: EmailIndex
+        - IndexName: EmailIndex
           KeySchema:
-            -
-              AttributeName: email
+            - AttributeName: email
               KeyType: HASH
-            -
-              AttributeName: created_at
+            - AttributeName: created_at
               KeyType: RANGE
 
           Projection:
             ProjectionType: ALL
           ProvisionedThroughput:
-           ReadCapacityUnits: 5
-           WriteCapacityUnits: 5
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
 
       TableName: user-records

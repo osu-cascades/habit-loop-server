@@ -12,18 +12,18 @@ const sendPushNotification = async () => {
 
   const users = await user.getAllUsers();
   const userPushTokens = _.compact(users.Items.map(u => u.push_token));
-  
+
   const messages = [];
   _.forEach(userPushTokens, token => {
     if (!Expo.isExpoPushToken(token)) {
-        logger.info(`Push token ${token} is not a valid Expo push token`);
+      logger.info(`Push token ${token} is not a valid Expo push token`);
     } else {
-        logger.info(`Creating notification for ${token}`);
-        messages.push({
-            to: token,
-            sound: 'default',
-            body: 'HEY DO YOUR TRAINING',
-        });
+      logger.info(`Creating notification for ${token}`);
+      messages.push({
+        to: token,
+        sound: 'default',
+        body: 'HEY DO YOUR TRAINING',
+      });
     }
   });
 
@@ -32,20 +32,18 @@ const sendPushNotification = async () => {
 
   _.forEach(chunks, async chunk => {
     try {
-        const ticketChunk = await expo.sendPushNotificationsAsync(chunk);
-        tickets.push(...ticketChunk);
+      const ticketChunk = await expo.sendPushNotificationsAsync(chunk);
+      tickets.push(...ticketChunk);
     } catch (err) {
-        logger.error(err);
+      logger.error(err);
     }
   });
   logger.info(`Succesfully sent notifcations to ${userPushTokens}`);
-
 };
-
 
 // Check users habit
 export default {
   handler: (event, context, callback) => {
     sendPushNotification();
-  }
-}
+  },
+};
