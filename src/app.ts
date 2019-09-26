@@ -9,7 +9,7 @@ const handler = {
       origin: '*',
       credentials: true,
     },
-  })
-}
+  }),
+};
 
 export default handler;
