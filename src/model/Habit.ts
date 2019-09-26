@@ -2,7 +2,7 @@ import _ from 'lodash';
 import User from './User';
 
 // item contains name, type, habit_id, user_id, created_at
-const createUpdate = (item) => {
+const createUpdate = item => {
   const updateTypes = ['habit_name', 'type', 'recurrence'];
 
   const types = _.pick(item, updateTypes);
@@ -13,9 +13,9 @@ const createUpdate = (item) => {
   });
 
   const expression = _.map(types, (val, key) => `#${key}123 = :val${key}`);
-  
+
   const ExpressionAttributeValues = {};
-  
+
   _.forEach(types, (val, key) => {
     ExpressionAttributeValues[`:val${key}`] = val;
   });
@@ -95,11 +95,7 @@ class Habit extends User {
   }
 
   async update(habit) {
-    const [
-      UpdateExpression, 
-      ExpressionAttributeValues, 
-      ExpressionAttributeNames,
-    ] = createUpdate(habit);
+    const [UpdateExpression, ExpressionAttributeValues, ExpressionAttributeNames] = createUpdate(habit);
 
     const params = {
       TableName: this.tableName,
