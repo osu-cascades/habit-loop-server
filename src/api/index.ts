@@ -1,6 +1,7 @@
 import Pino from 'pino';
 import _ from 'lodash';
 import jwt  from 'jsonwebtoken';
+import { Context } from 'aws-lambda';
 
 import resolvers  from './resolvers';
 import typeDefs  from './schema';
@@ -11,7 +12,7 @@ import StreakModel  from '../model/Streak';
 import RedisModel  from '../model/Redis';
 import GroupModel  from '../model/Group';
 
-const getAuth = headers => {
+const getAuth = (headers) => {
   const token = _.get(headers, 'Authorization', null);
   if (_.isEmpty(token)) {
     return null;
@@ -30,7 +31,7 @@ export default {
   resolvers,
   typeDefs,
   schemaDirectives,
-  context: async ({ event, context }) => {
+  context: async ({ event, context }: { event: any, context: Context }) => {
     return {
       logger: Pino(),
       context,
