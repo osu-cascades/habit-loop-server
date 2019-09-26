@@ -1,5 +1,5 @@
 import User from './User';
-import { DBModel, GroupDetails } from 'api/types';
+import { DBModel, GroupDetails } from '@src/api/types';
 import { DynamoDB } from 'aws-sdk';
 
 const removeLastComma = (str: string) => str.replace(/,(\s+)?$/, '');

@@ -4,7 +4,7 @@ import uuidv4 from 'uuid/v4';
 import _ from 'lodash';
 import UserModel from './User';
 import { DynamoDB } from 'aws-sdk';
-import { UserDetails } from 'api/types';
+import { UserDetails } from '@src/api/types';
 
 // https://www.dynamodbguide.com/leaderboard-write-sharding/
 class StreakModel extends UserModel {

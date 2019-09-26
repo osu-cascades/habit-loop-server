@@ -1,5 +1,5 @@
 @localUrl = http://localhost:3000/graphql
-@qaUrl = https://m7g5pc0boi.execute-api.us-east-1.amazonaws.com/dev/graphql
+@qaUrl = https://8tntvz34m4.execute-api.us-east-1.amazonaws.com/qa/graphql
 @AuthToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imtvb2xndXlAZ21haWwuY29tIiwidXNlcm5hbWUiOiJrb29sZ3V5MTEyIiwidXNlcl9pZCI6IjEiLCJyb2xlIjpbIlVTRVIiXSwiaWF0IjoxNTQ3MjYzNjgxLCJleHAiOjE1NDczNTAwODF9.VTXsW3V-qtcVZGiVz-AJViPW67THqlsz8JzBGhVVz1s
 POST {{qaUrl}}
 Content-Type: application/json
@@ -41,6 +41,8 @@ Content-Type: application/json
 # Delete habit we first created
 POST {{qaUrl}}
 Content-Type: application/json
+Authorization: Bearer xxx
+X-REQUEST-TYPE: GraphQL
 
 {
     "query":"mutation {\n  deleteHabit(habit_id: \"321\", created_at: \"now\") {\n    name\n    type\n  }\n}\n"
@@ -51,7 +53,8 @@ Content-Type: application/json
 # query for getting user data
 POST {{qaUrl}}
 Content-Type: application/json
-Authorization: Bearer {{AuthToken}}
+Authorization: Bearer xxx
+X-REQUEST-TYPE: GraphQL
 
 {
     "query":"{\n  me {\n    user_id\n    username\n  }\n}\n"
@@ -61,10 +64,20 @@ Authorization: Bearer {{AuthToken}}
 # signup test
 POST {{qaUrl}}
 Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+mutation ($input: SignupInput!) {
+    signup(input: $input)
+}
 
 {
-    "query":"mutation {\n  signup(input: {id: \"1\", username: \"koolguy112\", email: \"koolguy@gmail.com\", password: \"111\", created_at: \"now\"})\n}\n"
+    "input": {
+        "username": "koolguy",
+        "email": "koolguy@gmail.com",
+        "password": "12345678"
+    }
 }
+
 
 #####################################################################################################################
 # login test

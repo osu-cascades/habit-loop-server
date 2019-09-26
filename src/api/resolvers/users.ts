@@ -24,7 +24,7 @@ const resolvers: IResolvers = {
     async getUserGroups(instance, args, { user, GroupModel, logger }) {
       try {
         const { Items: groupData } = await GroupModel.getUserGroups(user.user_id);
-        const groups = groupData.filter(group => group.item_id !== 'group');
+        const groups = groupData.filter((group: any) => group.item_id !== 'group');
 
         return groups;
       } catch (err) {

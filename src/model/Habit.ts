@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import User from './User';
-import { HabitDetails } from 'api/types';
+import { HabitDetails } from '@src/api/types';
 
 // item contains name, type, habit_id, user_id, created_at
 const createUpdate = (item: HabitDetails) => {

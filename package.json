@@ -2,9 +2,9 @@
   "name": "habit-loop-server",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "./src/app.ts",
   "scripts": {
-    "start": "set NODE_ENV=test && node app.js",
+    "start": "set NODE_ENV=test && node src/app.ts",
     "test": "export NODE_ENV=test && export NODE_PATH=$(pwd)/node_modules && find test -name '*_test.js' | xargs nyc --reporter=lcov _mocha",
     "tsc": "tsc"
   },

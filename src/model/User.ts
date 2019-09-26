@@ -1,5 +1,5 @@
 import { DynamoDB } from 'aws-sdk';
-import { UserDetails, DBModel, StreakDetails } from 'api/types';
+import { UserDetails, DBModel, StreakDetails } from '@src/api/types';
 import AWS from 'aws-sdk';
 
 class UserModel implements DBModel {

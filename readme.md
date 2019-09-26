@@ -60,7 +60,7 @@ NODE_ENV=qa serverless deploy
 
 Make sure the AWS credentials are set up properly if you get errors.
 
-A common error I've run into is that deploying on macOS fails while deploying on a windows machine works. There's some weird stuff going on with bcrypt binaries or something but just mentioning it here in case the deploy doesn't work.
+A common error I've run into is that deploying on macOS fails while deploying on a windows machine works. There's some weird stuff going on with bcrypt binaries or something but just mentioning it here in case the deploy doesn't work. [Reference](https://stackoverflow.com/questions/15809611/bcrypt-invalid-elf-header-when-running-node-app).
 
 ## Running Locally
 
