@@ -16,17 +16,14 @@ const resolvers: IResolvers = {
       }
 
       // user is authenticated
-      
+
       const result = await UserModel.getByEmail(user.email);
       return _.get(result, 'Items[0]');
     },
 
-
     async getUserGroups(instance, args, { user, GroupModel, logger }) {
       try {
-        const {
-          Items: groupData,
-        } = await GroupModel.getUserGroups(user.user_id);
+        const { Items: groupData } = await GroupModel.getUserGroups(user.user_id);
         const groups = groupData.filter(group => group.item_id !== 'group');
 
         return groups;
@@ -38,9 +35,7 @@ const resolvers: IResolvers = {
 
     async getAllGroups(instance, args, { GroupModel, logger }) {
       try {
-        const {
-          Items: groupData,
-        } = await GroupModel.getAllGroups();
+        const { Items: groupData } = await GroupModel.getAllGroups();
 
         return groupData;
       } catch (err) {
@@ -49,16 +44,12 @@ const resolvers: IResolvers = {
       }
     },
   },
-  
+
   Mutation: {
     // Handle user signup
     async signup(instance, args, { logger, UserModel }) {
       try {
-        const {
-          username,
-          password,
-          email,
-        } = args.input;
+        const { username, password, email } = args.input;
 
         const user = {
           user_id: uuidv4(),
@@ -82,7 +73,7 @@ const resolvers: IResolvers = {
             role: user.role,
           },
           JWT_SECRET,
-          { expiresIn: '1d' },
+          { expiresIn: '1d' }
         );
       } catch (err) {
         logger.error(err);
@@ -93,7 +84,7 @@ const resolvers: IResolvers = {
     // Handles user login
     async login(instance, { email, password }, ctx) {
       const { UserModel, logger } = ctx;
-      let user; 
+      let user;
 
       try {
         const results = await UserModel.getByEmail(email);
@@ -122,7 +113,7 @@ const resolvers: IResolvers = {
           created_at: user.created_at,
         },
         JWT_SECRET,
-        { expiresIn: '1d' },
+        { expiresIn: '1d' }
       );
     },
 

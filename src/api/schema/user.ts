@@ -1,50 +1,50 @@
 import { gql } from 'apollo-server-lambda';
 
 const userDefs = gql`
-	extend type Query {
-		me: User
-		getUserStreak: Streak!
-		getTopStreaks: [Streak!]
-		getGroupLeaderboard(item_id: String!): [Streak]
-		getUserGroups: [Group]
-		getAllGroups: [Group]
-	}
-	
-	extend type Mutation {
-		signup(input: SignupInput!): String
-		login(email: String!, password: String!): String
-		registerPushNotification(token: String!, reminder: Reminder): String @requireAuth(role: USER)
-		createGroup(group_name: String!): String
-		joinGroup(item_id: String!, group_name: String!): String
-	} 
+  extend type Query {
+    me: User
+    getUserStreak: Streak!
+    getTopStreaks: [Streak!]
+    getGroupLeaderboard(item_id: String!): [Streak]
+    getUserGroups: [Group]
+    getAllGroups: [Group]
+  }
 
-	input SignupInput {
-		username: String!
-		password: String!
-		email: String!
-		manager: String
-	}
+  extend type Mutation {
+    signup(input: SignupInput!): String
+    login(email: String!, password: String!): String
+    registerPushNotification(token: String!, reminder: Reminder): String @requireAuth(role: USER)
+    createGroup(group_name: String!): String
+    joinGroup(item_id: String!, group_name: String!): String
+  }
 
-	type User {
-		user_id: String
-		username: String
-		email: String
-		created_at: String
-		role: [String]
-		manager: String
-	}
+  input SignupInput {
+    username: String!
+    password: String!
+    email: String!
+    manager: String
+  }
 
-	type Streak {
-		username: String
-		user_id: String
-		score: Int
-	}
+  type User {
+    user_id: String
+    username: String
+    email: String
+    created_at: String
+    role: [String]
+    manager: String
+  }
 
-	type Group {
-		group_name: String!
-		item_id: String!
-		user_id: String! 
-	}
+  type Streak {
+    username: String
+    user_id: String
+    score: Int
+  }
+
+  type Group {
+    group_name: String!
+    item_id: String!
+    user_id: String!
+  }
 `;
 
 export default userDefs;

@@ -1,9 +1,8 @@
 import User from './User';
-import { DBModel } from 'api/types';
+import { DBModel, GroupDetails } from 'api/types';
 import { DynamoDB } from 'aws-sdk';
 
-
-const removeLastComma = (str: string) => str.replace(/,(\s+)?$/, '');   
+const removeLastComma = (str: string) => str.replace(/,(\s+)?$/, '');
 
 // const createGroupQuery = (groups = ['TEST', 'TEST1', 'TEST2']) => {
 //   const mapFilter = groups.reduce((acc, group, index) => `${acc}:group${index + 1}, `, '');
@@ -19,18 +18,15 @@ const removeLastComma = (str: string) => str.replace(/,(\s+)?$/, '');
 // };
 
 class Group extends User implements DBModel {
-  tableName: string | undefined;
-  docClient: DynamoDB.DocumentClient | undefined;
-
   /**
    * Adds two rows: one for the user to specify the group
    *                two for the group itself and to specify the user being the owner
-   * @param { Object } 
+   * @param { Object }
    * @param user containing details on the user making the group
    * @param group containing details on the group itself
    * @return Promise containing dynamodb action
    */
-  createGroup(user: User , group: Group) {
+  createGroup(user: User, group: Group) {
     const params = {
       RequestItems: {
         [this.tableName]: [
@@ -60,7 +56,7 @@ class Group extends User implements DBModel {
     return this.docClient.put(params).promise();
   }
 
-  getUserGroups(user_id) {
+  getUserGroups(user_id: string) {
     const params = {
       TableName: this.tableName,
       KeyConditionExpression: 'user_id = :u AND begins_with(item_id, :g)',
@@ -69,11 +65,11 @@ class Group extends User implements DBModel {
         ':g': 'group',
       },
     };
-    
+
     return this.docClient.query(params).promise();
   }
 
-  getUsersInGroup(group) {
+  getUsersInGroup(group: GroupDetails) {
     const params = {
       TableName: this.tableName,
       IndexName: 'ItemIndex',

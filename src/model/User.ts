@@ -1,5 +1,6 @@
 import { DynamoDB } from 'aws-sdk';
-import { UserDetails, DBModel } from 'api/types';
+import { UserDetails, DBModel, StreakDetails } from 'api/types';
+import AWS from 'aws-sdk';
 
 class UserModel implements DBModel {
   tableName: string;
@@ -13,6 +14,7 @@ class UserModel implements DBModel {
     if (process.env.NODE_ENV === 'test') {
       AWS.config.update({
         region: 'us-east-1',
+        // @ts-ignore
         endpoint: 'http://localhost:8000',
       });
     }
@@ -50,7 +52,7 @@ class UserModel implements DBModel {
       },
     };
 
-     return this.docClient.query(params).promise();
+    return this.docClient.query(params).promise();
   }
 
   /**
@@ -82,7 +84,7 @@ class UserModel implements DBModel {
    * @param { Object } user Object containing details of the new User
    * @return return response from dyanmo of user creation
    */
-  create(user: UserDetails) {    
+  create(user: UserDetails | StreakDetails) {
     const params = {
       TableName: this.tableName,
       Item: user,
@@ -94,12 +96,16 @@ class UserModel implements DBModel {
   /**
    * Update push notification details
    *
-   * @param { Object } 
+   * @param { Object }
    * @param push_token string representing expo token
    * @param reminder when to send user a reminder
    * @return Promise containing dynamodb action
    */
-  updatePushNotification({ user_id, created_at }: { user_id: string, created_at: string}, push_token: string, reminder = 'MORNING') {
+  updatePushNotification(
+    { user_id, created_at }: { user_id: string; created_at: string },
+    push_token: string,
+    reminder = 'MORNING'
+  ) {
     const params = {
       TableName: this.tableName,
       IndexName: 'PushNotificationIndex',
@@ -126,7 +132,7 @@ class UserModel implements DBModel {
     return this.docClient.scan(params).promise();
   }
 
-  setPushNotification({ user_id, created_at }: { user_id: string, created_at: string}, set: any) {
+  setPushNotification({ user_id, created_at }: { user_id: string; created_at: string }, set: any) {
     const params = {
       TableName: this.tableName,
       Key: {
