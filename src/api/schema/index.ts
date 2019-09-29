@@ -4,6 +4,7 @@ import userDefs from './user';
 
 const typeDefs = gql`
   directive @requireAuth(role: Role) on FIELD_DEFINITION
+
   enum Role {
     MANAGER
     ADMIN
