@@ -133,7 +133,8 @@ const resolver: IResolvers = {
         // make sure completeHabit makes an entry before adding to streak and events
         await RedisClient.streak.completeHabit(user_id, item_id, recurrence);
         if (completed === 0) {
-          ctx.StreakModel.upsert(user_id, username);
+          const results = await ctx.StreakModel.upsert(user_id, username);
+          return true;
         }
       } catch (err) {
         ctx.logger.error(`Error trying to complete habit ${item_id} for user ${user_id}.`);
@@ -141,7 +142,7 @@ const resolver: IResolvers = {
       } finally {
         RedisClient.disconnect();
       }
-      return 1;
+      return true;
     },
   },
 };

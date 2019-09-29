@@ -1,6 +1,6 @@
 import { gql } from 'apollo-server-lambda';
 
-const userDefs = gql`
+export default gql`
   extend type Query {
     me: User
     getUserStreak: Streak!
@@ -46,5 +46,3 @@ const userDefs = gql`
     user_id: String!
   }
 `;
-
-export default userDefs;

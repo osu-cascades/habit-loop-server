@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "apollo-server-cache-redis": "^0.4.0",
-    "apollo-server-lambda": "^2.4.8",
+    "apollo-server-lambda": "^2.9.4",
     "aws-sdk": "^2.361.0",
     "bcrypt": "^3.0.5",
     "body-parser": "^1.18.3",
@@ -22,6 +22,7 @@
     "ioredis": "^4.9.0",
     "jsonwebtoken": "^8.4.0",
     "lodash": "^4.17.11",
+    "merge-graphql-schemas": "^1.7.0",
     "moment": "^2.24.0",
     "pino": "^5.10.6",
     "uuid": "^3.3.2",
