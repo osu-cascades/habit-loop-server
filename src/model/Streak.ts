@@ -79,7 +79,7 @@ class StreakModel extends UserModel {
       };
 
       userStreakExists = await this.getUserStreak(user_id);
-      console.log(userStreakExists, 'nice');
+
       if (_.isEmpty(userStreakExists.Items)) {
         const results = await this.create(createParams);
         return results;
