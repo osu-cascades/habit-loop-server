@@ -80,7 +80,7 @@ class StreakModel extends UserModel {
 
       userStreakExists = await this.getUserStreak(user_id);
 
-      if (_.isEmpty(userStreakExists)) {
+      if (_.isEmpty(userStreakExists.Items)) {
         const results = await this.create(createParams);
         return results;
       }
@@ -112,6 +112,8 @@ class StreakModel extends UserModel {
 
       return this.docClient.update(params).promise();
     }
+
+    return null;
   }
 
   getTopStreaks(Limit = 10) {

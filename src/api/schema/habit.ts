@@ -1,6 +1,6 @@
 import { gql } from 'apollo-server-lambda';
 
-const habitDefs = gql`
+export default gql`
   extend type Query {
     getHabit(habit_id: String!, created_at: String!): Habit
     getHabits: [Habit] @requireAuth(role: USER)
@@ -55,5 +55,3 @@ const habitDefs = gql`
     LOW
   }
 `;
-
-export default habitDefs;
