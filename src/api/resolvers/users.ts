@@ -117,6 +117,16 @@ const resolvers: IResolvers = {
       );
     },
 
+    async cbtLogin(instance, { email, password }, ctx) {
+      axios.post('https://api.cbtnuggets.com/auth-gateway/v1/login', {
+        username: email,
+        password: password
+      })
+      .then(response => {
+        return response.data.access_token
+      })
+    }
+
     async registerPushNotification(instance, { token }, { user, UserModel, logger }) {
       try {
         const results = await UserModel.updatePushNotification(user, token);
