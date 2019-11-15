@@ -3,6 +3,7 @@ import jsonwebtoken from 'jsonwebtoken';
 import uuidv4 from 'uuid/v4';
 import _ from 'lodash';
 import { IResolvers } from 'apollo-server-lambda';
+import axios from 'axios';
 
 const JWT_SECRET = 'supersecret';
 
