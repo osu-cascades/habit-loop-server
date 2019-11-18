@@ -124,7 +124,10 @@ const resolvers: IResolvers = {
         password: password
       })
       .then(response => {
-        return response.data.access_token
+        return response.data.access_token;
+      })
+      .catch(error => {
+        throw new Error(error);
       })
     },
 
