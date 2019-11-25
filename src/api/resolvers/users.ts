@@ -3,6 +3,7 @@ import jsonwebtoken from 'jsonwebtoken';
 import uuidv4 from 'uuid/v4';
 import _ from 'lodash';
 import { IResolvers } from 'apollo-server-lambda';
+import axios from 'axios';
 
 const JWT_SECRET = 'supersecret';
 
@@ -115,6 +116,19 @@ const resolvers: IResolvers = {
         JWT_SECRET,
         { expiresIn: '1d' }
       );
+    },
+
+    async cbtLogin(instance, { email, password }, ctx) {
+      return await axios.post('https://api.cbtnuggets.com/auth-gateway/v1/login', {
+        username: email,
+        password: password
+      })
+      .then(response => {
+        return response.data.access_token;
+      })
+      .catch(error => {
+        throw new Error(error);
+      })
     },
 
     async registerPushNotification(instance, { token }, { user, UserModel, logger }) {
