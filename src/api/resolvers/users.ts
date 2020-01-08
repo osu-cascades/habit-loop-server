@@ -83,40 +83,40 @@ const resolvers: IResolvers = {
     },
 
     // Handles user login
-    // async login(instance, { email, password }, ctx) {
-    //   const { UserModel, logger } = ctx;
-    //   let user;
+    async login(instance, { email, password }, ctx) {
+      const { UserModel, logger } = ctx;
+      let user;
 
-    //   try {
-    //     const results = await UserModel.getByEmail(email);
-    //     user = _.get(results, 'Items[0]');
-    //   } catch (error) {
-    //     logger.error('USER_LOGIN_ERROR', error);
-    //   }
+      try {
+        const results = await UserModel.getByEmail(email);
+        user = _.get(results, 'Items[0]');
+      } catch (error) {
+        logger.error('USER_LOGIN_ERROR', error);
+      }
 
-    //   if (!user) {
-    //     throw new Error('No user with that email');
-    //   }
+      if (!user) {
+        throw new Error('No user with that email');
+      }
 
-    //   const valid = await bcrypt.compare(password, user.password);
+      const valid = await bcrypt.compare(password, user.password);
 
-    //   if (!valid) {
-    //     throw new Error('Incorrect password');
-    //   }
+      if (!valid) {
+        throw new Error('Incorrect password');
+      }
 
-    //   // payload containing user info
-    //   return jsonwebtoken.sign(
-    //     {
-    //       email: user.email,
-    //       username: user.username,
-    //       user_id: user.user_id,
-    //       role: user.role,
-    //       created_at: user.created_at,
-    //     },
-    //     JWT_SECRET,
-    //     { expiresIn: '1d' }
-    //   );
-    // },
+      // payload containing user info
+      return jsonwebtoken.sign(
+        {
+          email: user.email,
+          username: user.username,
+          user_id: user.user_id,
+          role: user.role,
+          created_at: user.created_at,
+        },
+        JWT_SECRET,
+        { expiresIn: '1d' }
+      );
+    },
 
     async cbtLogin(instance, { email, password }, ctx) {
       const response = await axios.post('https://api.cbtnuggets.com/auth-gateway/v1/login', {
@@ -138,8 +138,6 @@ const resolvers: IResolvers = {
         console.log(error)
       }
 
-
-      console.log(response.data)
       return jsonwebtoken.sign(
         {
           username: user.username,
