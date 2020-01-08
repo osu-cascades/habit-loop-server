@@ -26,6 +26,7 @@ const getAuth = (headers: any) => {
   try {
     const id = token.replace('Bearer ', '');
     const user = jwt.verify(id, 'supersecret');
+
     return user;
   } catch (err) {
     throw new Error('You are not authorized for this resource.');

@@ -119,16 +119,37 @@ const resolvers: IResolvers = {
     },
 
     async cbtLogin(instance, { email, password }, ctx) {
-      return await axios.post('https://api.cbtnuggets.com/auth-gateway/v1/login', {
+      const response = await axios.post('https://api.cbtnuggets.com/auth-gateway/v1/login', {
         username: email,
         password: password
       })
-      .then(response => {
-        return response.data.access_token;
-      })
-      .catch(error => {
-        throw new Error(error);
-      })
+
+      const user = {
+        username: email,
+        role: ['USER'],
+        created_at: `${Date.now()}`,
+        user_id: response.data.user_id,
+        item_id: `profile-${response.data.user_id}`
+      }
+
+      try {
+        await ctx.UserModel.create(user)
+      } catch (error) {
+        console.log(error)
+      }
+
+      return jsonwebtoken.sign(
+        {
+          username: user.username,
+          role: user.role,
+          created_at: user.created_at,
+          user_id: user.user_id,
+          item_id: user.item_id,
+          token: response.data.access_token
+        },
+        JWT_SECRET,
+        { expiresIn: '1d' }
+      )
     },
 
     async registerPushNotification(instance, { token }, { user, UserModel, logger }) {
