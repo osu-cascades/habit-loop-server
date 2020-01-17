@@ -22,6 +22,7 @@ export default gql`
     type: String
     recurrence: Recurrence
     trainedFor: Int
+    links: String
   }
 
   input UpdateHabitInput {
@@ -32,6 +33,7 @@ export default gql`
     type: String
     recurrence: Recurrence
     trainedFor: Int
+    links: String
   }
 
   type Habit {
@@ -45,6 +47,7 @@ export default gql`
     completed_today: Boolean
     recurrence: Recurrence
     trainedFor: Int
+    links: String
   }
 
   enum Recurrence {
