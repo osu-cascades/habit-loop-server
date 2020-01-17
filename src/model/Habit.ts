@@ -4,7 +4,7 @@ import { HabitDetails } from '@src/api/types';
 
 // item contains name, type, habit_id, user_id, created_at
 const createUpdate = (item: HabitDetails) => {
-  const updateTypes = ['habit_name', 'type', 'recurrence'];
+  const updateTypes = ['habit_name', 'type', 'recurrence', 'trainedFor', 'links'];
 
   const types = _.pick(item, updateTypes);
 
