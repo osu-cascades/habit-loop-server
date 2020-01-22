@@ -40,6 +40,8 @@ interface HabitDetails extends Base {
   priority: string;
   completed_today: boolean;
   recurrence: string;
+  trainedFor: number;
+  links: string;
 }
 
 interface PushNotification {
