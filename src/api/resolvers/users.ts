@@ -44,6 +44,21 @@ const resolvers: IResolvers = {
         return err;
       }
     },
+
+    async getUserRole(instance, { userId }, ctx) {
+      const { UserModel, logger } = ctx;
+      let user;
+
+      try {
+        const result = await UserModel.getByIdOnly(userId);
+        user = _.get(result, 'Items[0]');
+      } catch (err) {
+        logger.error(`Problem getting user: ${err}`);
+        return err;
+      }
+
+      return user.role;
+    },
   },
 
   Mutation: {
@@ -121,21 +136,21 @@ const resolvers: IResolvers = {
     async cbtLogin(instance, { email, password }, ctx) {
       const response = await axios.post('https://api.cbtnuggets.com/auth-gateway/v1/login', {
         username: email,
-        password: password
-      })
+        password: password,
+      });
 
       const user = {
         username: email,
         role: ['USER'],
         created_at: `${Date.now()}`,
         user_id: response.data.user_id,
-        item_id: `profile-${response.data.user_id}`
-      }
+        item_id: `profile-${response.data.user_id}`,
+      };
 
       try {
-        await ctx.UserModel.create(user)
+        await ctx.UserModel.create(user);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
 
       return jsonwebtoken.sign(
@@ -145,11 +160,11 @@ const resolvers: IResolvers = {
           created_at: user.created_at,
           user_id: user.user_id,
           item_id: user.item_id,
-          token: response.data.access_token
+          token: response.data.access_token,
         },
         JWT_SECRET,
         { expiresIn: '1d' }
-      )
+      );
     },
 
     async registerPushNotification(instance, { token }, { user, UserModel, logger }) {
