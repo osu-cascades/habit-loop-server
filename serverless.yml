@@ -36,15 +36,13 @@ functions:
           path: graphql
           method: post
           cors: true
-  
-  
   pushNotifications:
-    handler: lib/pushNotifications.handler
+    handler: lib/pushNotifications.handler  
     events:
       - schedule:
           name: push-notification-handler
           description: 'Sends push notification reminding user to train.'
-          rate: rate(10 days)
+          rate: rate(2 minutes)
       - http:
           path: notification
           method: get
