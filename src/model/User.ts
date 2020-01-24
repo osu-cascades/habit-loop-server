@@ -48,7 +48,7 @@ class UserModel implements DBModel {
         '#user': 'user',
       },
       ExpressionAttributeValues: {
-        ':user_id': user_id,
+        ':user': user_id,
       },
     };
 
