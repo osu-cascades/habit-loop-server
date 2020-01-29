@@ -57,7 +57,7 @@ const resolvers: IResolvers = {
         return err;
       }
 
-      return user.role;
+      return user;
     },
   },
 
