@@ -45,7 +45,7 @@ const resolvers: IResolvers = {
       }
     },
 
-    async getUserRole(instance, { user_id }, ctx) {
+    async getUserRole(instance, { user_id: user_id }, ctx) {
       const { UserModel, logger } = ctx;
       let user;
 
