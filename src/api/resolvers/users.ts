@@ -48,6 +48,8 @@ const resolvers: IResolvers = {
     async getUserRole(instance, args, ctx) {
       let user;
 
+      console.log(ctx);
+
       try {
         const result = await ctx.UserModel.getByIdOnly(ctx.user.user_id);
         user = _.get(result, 'Items[0]');
