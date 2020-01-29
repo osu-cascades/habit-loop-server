@@ -8,7 +8,7 @@ export default gql`
     getGroupLeaderboard(item_id: String!): [Streak]
     getUserGroups: [Group]
     getAllGroups: [Group]
-    getUserRole(user_id: String): [String]
+    getUserRole(user_id: String): String
   }
 
   extend type Mutation {
@@ -32,7 +32,7 @@ export default gql`
     username: String
     email: String
     created_at: String
-    role: [String]
+    role: String
     manager: String
   }
 
