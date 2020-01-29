@@ -32,7 +32,7 @@ export default gql`
     username: String
     email: String
     created_at: String
-    role: String
+    role: [String]
     manager: String
   }
 
