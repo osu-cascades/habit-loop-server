@@ -43,10 +43,10 @@ class UserModel implements DBModel {
   getByIdOnly(user_id: string) {
     const params = {
       TableName: this.tableName,
-      KeyConditionExpression: '#user_id = :user_id',
-      ExpressionAttributeNames: {
-        '#user_id': 'user_id',
-      },
+      KeyConditionExpression: 'user_id = :user_id',
+      // ExpressionAttributeNames: {
+      //   '#user': 'user',
+      // },
       ExpressionAttributeValues: {
         ':user_id': user_id,
       },
