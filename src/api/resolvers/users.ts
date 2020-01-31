@@ -47,7 +47,7 @@ const resolvers: IResolvers = {
 
     async getUserRole(instance, args, { user, UserModel, logger }) {
       try {
-        const result = await UserModel.getByIdOnly(user.user_id);
+        const result = await UserModel.getById(user.user_id, user.created_at);
         return _.get(result, 'Items[0]');
       } catch (err) {
         logger.error(`Problem getting user: ${err}`);
