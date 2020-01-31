@@ -18,7 +18,7 @@ const resolvers: IResolvers = {
 
       // user is authenticated
 
-      const result = await UserModel.getByEmail(user.email);
+      const result = await UserModel.getByEmail(user.username);
       return _.get(result, 'Items[0]');
     },
 
