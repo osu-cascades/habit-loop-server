@@ -45,19 +45,14 @@ const resolvers: IResolvers = {
       }
     },
 
-    async getUserRole(instance, { user_id }, ctx) {
-      const { UserModel, logger } = ctx;
-      let user;
-
+    async getUserRole(instance, args, { user, UserModel, logger }) {
       try {
-        const result = await UserModel.getByIdOnly(user_id);
-        user = _.get(result, 'Items[0]');
+        const result = await UserModel.getByIdOnly(user.user_id);
+        return _.get(result, 'Items[0]');
       } catch (err) {
         logger.error(`Problem getting user: ${err}`);
         return err;
       }
-
-      return user;
     },
   },
 
