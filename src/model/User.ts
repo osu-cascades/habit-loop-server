@@ -45,7 +45,7 @@ class UserModel implements DBModel {
       TableName: this.tableName,
       KeyConditionExpression: '#user = :user_id',
       ExpressionAttributeNames: {
-        '#user': 'user',
+        '#user_id': 'user_id',
       },
       ExpressionAttributeValues: {
         ':user_id': user_id,
