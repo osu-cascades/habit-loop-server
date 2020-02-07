@@ -17,9 +17,12 @@ const resolvers: IResolvers = {
       }
 
       // user is authenticated
-
-      const result = await UserModel.getByEmail(user.username);
-      return _.get(result, 'Items[0]');
+      try {
+        const result = await UserModel.getByEmail(user.username);
+        return _.get(result, 'Items[0]');
+      } catch (err) {
+        return err;
+      }
     },
 
     async getUserGroups(instance, args, { user, GroupModel, logger }) {
