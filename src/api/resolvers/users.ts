@@ -1,4 +1,4 @@
-import bcrypt from 'bcryptjs';
+// import bcrypt from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
 import uuidv4 from 'uuid/v4';
 import _ from 'lodash';
@@ -61,75 +61,75 @@ const resolvers: IResolvers = {
 
   Mutation: {
     // Handle user signup
-    async signup(instance, args, { logger, UserModel }) {
-      try {
-        const { username, password, email } = args.input;
+    // async signup(instance, args, { logger, UserModel }) {
+    //   try {
+    //     const { username, password, email } = args.input;
 
-        const user = {
-          user_id: uuidv4(),
-          username,
-          email,
-          item_id: `profile-${uuidv4()}`,
-          created_at: `${Date.now()}`,
-          role: ['USER'],
-          password: await bcrypt.hash(password, 10),
-        };
+    //     const user = {
+    //       user_id: uuidv4(),
+    //       username,
+    //       email,
+    //       item_id: `profile-${uuidv4()}`,
+    //       created_at: `${Date.now()}`,
+    //       role: ['USER'],
+    //       password: await bcrypt.hash(password, 10),
+    //     };
 
-        await UserModel.create(user);
-        logger.info('New user has been created!');
+    //     await UserModel.create(user);
+    //     logger.info('New user has been created!');
 
-        // return json web token
-        return jsonwebtoken.sign(
-          {
-            email: user.email,
-            username: user.username,
-            user_id: user.user_id,
-            role: user.role,
-          },
-          JWT_SECRET,
-          { expiresIn: '1d' }
-        );
-      } catch (err) {
-        logger.error(err);
-        throw err;
-      }
-    },
+    //     // return json web token
+    //     return jsonwebtoken.sign(
+    //       {
+    //         email: user.email,
+    //         username: user.username,
+    //         user_id: user.user_id,
+    //         role: user.role,
+    //       },
+    //       JWT_SECRET,
+    //       { expiresIn: '1d' }
+    //     );
+    //   } catch (err) {
+    //     logger.error(err);
+    //     throw err;
+    //   }
+    // },
 
     // Handles user login
-    async login(instance, { email, password }, ctx) {
-      const { UserModel, logger } = ctx;
-      let user;
+    // async login(instance, { email, password }, ctx) {
+    //   const { UserModel, logger } = ctx;
+    //   let user;
 
-      try {
-        const results = await UserModel.getByEmail(email);
-        user = _.get(results, 'Items[0]');
-      } catch (error) {
-        logger.error('USER_LOGIN_ERROR', error);
-      }
+    //   try {
+    //     const results = await UserModel.getByEmail(email);
+    //     user = _.get(results, 'Items[0]');
+    //   } catch (error) {
+    //     logger.error('USER_LOGIN_ERROR', error);
+    //   }
 
-      if (!user) {
-        throw new Error('No user with that email');
-      }
+    //   if (!user) {
+    //     throw new Error('No user with that email');
+    //   }
 
-      const valid = await bcrypt.compare(password, user.password);
+    //   const valid = await bcrypt.compare(password, user.password);
 
-      if (!valid) {
-        throw new Error('Incorrect password');
-      }
+    //   if (!valid) {
+    //     throw new Error('Incorrect password');
+    //   }
 
-      // payload containing user info
-      return jsonwebtoken.sign(
-        {
-          email: user.email,
-          username: user.username,
-          user_id: user.user_id,
-          role: user.role,
-          created_at: user.created_at,
-        },
-        JWT_SECRET,
-        { expiresIn: '1d' }
-      );
-    },
+    //   // payload containing user info
+    //   return jsonwebtoken.sign(
+    //     {
+    //       email: user.email,
+    //       username: user.username,
+    //       user_id: user.user_id,
+    //       role: user.role,
+    //       created_at: user.created_at,
+    //     },
+    //     JWT_SECRET,
+    //     { expiresIn: '1d' }
+    //   );
+    // },
 
     async cbtLogin(instance, { email, password }, ctx) {
       const response = await axios.post('https://api.cbtnuggets.com/auth-gateway/v1/login', {
