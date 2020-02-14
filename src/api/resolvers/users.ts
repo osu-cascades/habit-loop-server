@@ -139,6 +139,7 @@ const resolvers: IResolvers = {
 
       const user = {
         username: email,
+        email: email,
         role: ['USER'],
         created_at: `${Date.now()}`,
         user_id: response.data.user_id,
@@ -154,6 +155,7 @@ const resolvers: IResolvers = {
       return jsonwebtoken.sign(
         {
           username: user.username,
+          email: user.email,
           role: user.role,
           created_at: user.created_at,
           user_id: user.user_id,
