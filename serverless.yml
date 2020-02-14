@@ -52,6 +52,7 @@ plugins:
   - serverless-plugin-typescript
   # - serverless-dynamodb-local
   - serverless-offline
+  - serverless-dotenv-plugin
 
 resources:
   - ${file(resources/dynamo/UserTable.yml)}
