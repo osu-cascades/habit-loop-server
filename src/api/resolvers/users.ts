@@ -72,7 +72,7 @@ const resolvers: IResolvers = {
           item_id: `profile-${uuidv4()}`,
           created_at: `${Date.now()}`,
           role: ['USER'],
-          password: await bcrypt.hash(password, 10),
+          // password: await bcrypt.hash(password, 10),
         };
 
         await UserModel.create(user);
@@ -111,11 +111,11 @@ const resolvers: IResolvers = {
         throw new Error('No user with that email');
       }
 
-      const valid = await bcrypt.compare(password, user.password);
+      // const valid = await bcrypt.compare(password, user.password);
 
-      if (!valid) {
-        throw new Error('Incorrect password');
-      }
+      // if (!valid) {
+      //   throw new Error('Incorrect password');
+      // }
 
       // payload containing user info
       return jsonwebtoken.sign(
