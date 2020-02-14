@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
 import uuidv4 from 'uuid/v4';
 import _ from 'lodash';
