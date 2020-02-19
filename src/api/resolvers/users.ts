@@ -123,33 +123,38 @@ const resolvers: IResolvers = {
         password: password,
       });
 
-      const user = {
-        username: email,
-        email: email,
-        role: ['USER'],
-        created_at: `${Date.now()}`,
-        user_id: response.data.user_id,
-        item_id: `profile-${response.data.user_id}`,
-      };
-
-      try {
-        const results = await ctx.UserModel.getByEmail(email);
-        if (!results) {
+      const results = await ctx.UserModel.getByEmail(email)
+      
+      if(!results) {
+        const user = {
+          username: email,
+          email: email,
+          role: ['USER'],
+          created_at: `${Date.now()}`,
+          user_id: response.data.user_id,
+          item_id: `profile-${response.data.user_id}`,
+        };
+        
+        try {
           await ctx.UserModel.create(user);
-          return jsonwebtoken.sign(
-            {
-              username: user.username,
-              email: user.email,
-              role: user.role,
-              created_at: user.created_at,
-              user_id: user.user_id,
-              item_id: user.item_id,
-              token: response.data.access_token,
-            },
-            JWT_SECRET,
-            { expiresIn: '1d' }
-          );
-        } else {
+        } catch (error) {
+          console.log(error)
+        }
+
+        return jsonwebtoken.sign(
+          {
+            username: user.username,
+            email: user.email,
+            role: user.role,
+            created_at: user.created_at,
+            user_id: user.user_id,
+            item_id: user.item_id,
+            token: response.data.access_token,
+          },
+          JWT_SECRET,
+          { expiresIn: '1d' }
+        );
+      } else {
           return jsonwebtoken.sign(
             {
               username: results.username,
@@ -164,8 +169,6 @@ const resolvers: IResolvers = {
             { expiresIn: '1d' }
           );
         }
-      } catch (error) {
-        console.log(error);
       }
 
       // return jsonwebtoken.sign(
