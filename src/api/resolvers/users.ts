@@ -133,19 +133,22 @@ const resolvers: IResolvers = {
       };
 
       try {
-        await ctx.UserModel.create(user);
+        const results = await ctx.UserModel.getByEmail(email);
+        if (!results) {
+          await ctx.UserModel.create(user);
+        }
       } catch (error) {
         console.log(error);
       }
 
       return jsonwebtoken.sign(
         {
-          username: user.username,
-          email: user.email,
-          role: user.role,
-          created_at: user.created_at,
-          user_id: user.user_id,
-          item_id: user.item_id,
+          // username: user.username,
+          // email: user.email,
+          // role: user.role,
+          // created_at: user.created_at,
+          // user_id: user.user_id,
+          // item_id: user.item_id,
           token: response.data.access_token,
         },
         JWT_SECRET,
