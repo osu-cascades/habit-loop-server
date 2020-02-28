@@ -123,53 +123,54 @@ const resolvers: IResolvers = {
         password: password,
       });
 
+      let user;
+
       try {
         const results = await ctx.UserModel.getByEmail(email);
-
-        if (results) {
-          const user = _.get(results, 'Items[0]');
-
-          return jsonwebtoken.sign(
-            {
-              username: user.username,
-              email: user.email,
-              role: user.role,
-              created_at: user.created_at,
-              user_id: user.user_id,
-              item_id: user.item_id,
-              token: response.data.access_token,
-            },
-            JWT_SECRET,
-            { expiresIn: '1d' }
-          );
-        } else {
-          const user = {
-            username: email,
-            email: email,
-            role: ['USER'],
-            created_at: `${Date.now()}`,
-            user_id: response.data.user_id,
-            item_id: `profile-${response.data.user_id}`,
-          };
-
-          await ctx.UserModel.create(user);
-
-          return jsonwebtoken.sign(
-            {
-              username: user.username,
-              email: user.email,
-              role: user.role,
-              created_at: user.created_at,
-              user_id: user.user_id,
-              item_id: user.item_id,
-              token: response.data.access_token,
-            },
-            JWT_SECRET,
-            { expiresIn: '1d' }
-          );
-        }
+        user = _.get(results, 'Items[0]');
       } catch (error) {
         console.log(error);
+      }
+
+      if (!user) {
+        const newUser = {
+          username: email,
+          email: email,
+          role: ['USER'],
+          created_at: `${Date.now()}`,
+          user_id: response.data.user_id,
+          item_id: `profile-${response.data.user_id}`,
+        };
+
+        await ctx.UserModel.create(newUser);
+
+        return jsonwebtoken.sign(
+          {
+            username: newUser.username,
+            email: newUser.email,
+            role: newUser.role,
+            created_at: newUser.created_at,
+            user_id: newUser.user_id,
+            item_id: newUser.item_id,
+            token: response.data.access_token,
+          },
+          JWT_SECRET,
+          { expiresIn: '1d' }
+        );
+      } else {
+        return jsonwebtoken.sign(
+          {
+            username: user.username,
+            email: user.email,
+            role: user.role,
+            created_at: user.created_at,
+            user_id: user.user_id,
+            item_id: user.item_id,
+            token: response.data.access_token,
+          },
+          JWT_SECRET,
+          { expiresIn: '1d' }
+        );
       }
     },
 
