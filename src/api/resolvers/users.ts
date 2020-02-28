@@ -126,7 +126,7 @@ const resolvers: IResolvers = {
       try {
         const results = await ctx.UserModel.getByEmail(email);
 
-        if (results) {
+        if (results !== null) {
           const user = _.get(results, 'Items[0]');
 
           return jsonwebtoken.sign(
