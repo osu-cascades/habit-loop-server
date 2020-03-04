@@ -20,6 +20,7 @@ export default gql`
   input HabitInput {
     habit_name: String!
     type: String
+    group: String
     recurrence: Recurrence
     trainedFor: Int
     links: String
@@ -31,6 +32,7 @@ export default gql`
     user_id: String
     habit_name: String
     type: String
+    group: String
     recurrence: Recurrence
     trainedFor: Int
     links: String
@@ -45,6 +47,7 @@ export default gql`
     created_at: String
     notify: Reminder
     completed_today: Boolean
+    group: String
     recurrence: Recurrence
     trainedFor: Int
     links: String
