@@ -103,13 +103,7 @@ const resolver: IResolvers = {
           const habit = _.extend(input, generatedInput);
 
           ctx.HabitModel.create(habit);
-          // try {
-          //   const results = ctx.HabitModel.create(habit);
-          //   return results;
-          // } catch (err) {
-          //   ctx.logger.error(err);
-          //   return err;
-          // }
+          return habit;
         });
 
         return habits;
