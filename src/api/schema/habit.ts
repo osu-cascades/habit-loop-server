@@ -9,7 +9,7 @@ export default gql`
 
   extend type Mutation {
     createHabit(input: HabitInput): Habit @requireAuth(role: USER)
-    createGroupHabit(group_id: String, input: HabitInput): [Habit] @requireAuth(role: ADMIN)
+    createGroupHabit(group_id: String, input: HabitInput): Habit @requireAuth(role: ADMIN)
     deleteHabit(item_id: String!): Habit
     addHabitForUser(user_id: String!, input: HabitInput): Habit @requireAuth(role: MANAGER)
     updateHabit(input: UpdateHabitInput!): Habit
