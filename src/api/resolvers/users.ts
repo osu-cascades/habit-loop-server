@@ -43,6 +43,17 @@ const resolvers: IResolvers = {
         return err;
       }
     },
+
+    async getAllGroupUsers(instance, { item_id: group_id }, { GroupModel, logger }) {
+      try {
+        const { Items: users } = await GroupModel.getUsersInGroup(group_id);
+
+        return users;
+      } catch (err) {
+        logger.error(err);
+        return err;
+      }
+    },
   },
 
   Mutation: {
