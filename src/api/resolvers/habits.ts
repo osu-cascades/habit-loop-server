@@ -87,6 +87,38 @@ const resolver: IResolvers = {
       }
     },
 
+    async createGroupHabit(instance, args, ctx) {
+      const input = _.get(args, 'input');
+      const group_id = _.get(args, 'group_id');
+
+      try {
+        const { Items: users } = await ctx.GroupModel.getUsersInGroup(group_id);
+        const habits = _.map(users, user => {
+          const generatedInput = {
+            user_id: user.user_id,
+            item_id: `habit-${uuidv4()}`,
+            created_at: `${Date.now()}`,
+          };
+
+          const habit = _.extend(input, generatedInput);
+
+          ctx.HabitModel.create(habit);
+          // try {
+          //   const results = ctx.HabitModel.create(habit);
+          //   return results;
+          // } catch (err) {
+          //   ctx.logger.error(err);
+          //   return err;
+          // }
+        });
+
+        return habits;
+      } catch (err) {
+        ctx.logger.error(err);
+        return err;
+      }
+    },
+
     async deleteHabit(instance, args, ctx) {
       const { item_id } = args;
 
