@@ -9,6 +9,7 @@ export default gql`
 
   extend type Mutation {
     createHabit(input: HabitInput): Habit @requireAuth(role: USER)
+    createGroupHabit(group_id: String, input: HabitInput): [Habit] @requireAuth(role: ADMIN)
     deleteHabit(item_id: String!): Habit
     addHabitForUser(user_id: String!, input: HabitInput): Habit @requireAuth(role: MANAGER)
     updateHabit(input: UpdateHabitInput!): Habit
@@ -20,6 +21,7 @@ export default gql`
   input HabitInput {
     habit_name: String!
     type: String
+    group: String
     recurrence: Recurrence
     trainedFor: Int
     links: String
@@ -31,6 +33,7 @@ export default gql`
     user_id: String
     habit_name: String
     type: String
+    group: String
     recurrence: Recurrence
     trainedFor: Int
     links: String
@@ -45,6 +48,7 @@ export default gql`
     created_at: String
     notify: Reminder
     completed_today: Boolean
+    group: String
     recurrence: Recurrence
     trainedFor: Int
     links: String
