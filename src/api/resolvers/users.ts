@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt';
 import jsonwebtoken from 'jsonwebtoken';
 import uuidv4 from 'uuid/v4';
 import _ from 'lodash';
@@ -59,7 +58,7 @@ const resolvers: IResolvers = {
           item_id: `profile-${uuidv4()}`,
           created_at: `${Date.now()}`,
           role: ['USER'],
-          password: await bcrypt.hash(password, 10),
+          // password: await bcrypt.hash(password, 10),
         };
 
         await UserModel.create(user);
@@ -98,11 +97,11 @@ const resolvers: IResolvers = {
         throw new Error('No user with that email');
       }
 
-      const valid = await bcrypt.compare(password, user.password);
+      // const valid = await bcrypt.compare(password, user.password);
 
-      if (!valid) {
-        throw new Error('Incorrect password');
-      }
+      // if (!valid) {
+      //   throw new Error('Incorrect password');
+      // }
 
       // payload containing user info
       return jsonwebtoken.sign(
@@ -119,16 +118,60 @@ const resolvers: IResolvers = {
     },
 
     async cbtLogin(instance, { email, password }, ctx) {
-      return await axios.post('https://api.cbtnuggets.com/auth-gateway/v1/login', {
+      const response = await axios.post('https://api.cbtnuggets.com/auth-gateway/v1/login', {
         username: email,
-        password: password
-      })
-      .then(response => {
-        return response.data.access_token;
-      })
-      .catch(error => {
-        throw new Error(error);
-      })
+        password: password,
+      });
+
+      let user;
+
+      try {
+        const results = await ctx.UserModel.getByEmail(email);
+        user = _.get(results, 'Items[0]');
+      } catch (error) {
+        console.log(error);
+      }
+
+      if (!user) {
+        const newUser = {
+          username: email,
+          email: email,
+          role: ['USER'],
+          created_at: `${Date.now()}`,
+          user_id: response.data.user_id,
+          item_id: `profile-${response.data.user_id}`,
+        };
+
+        await ctx.UserModel.create(newUser);
+
+        return jsonwebtoken.sign(
+          {
+            username: newUser.username,
+            email: newUser.email,
+            role: newUser.role,
+            created_at: newUser.created_at,
+            user_id: newUser.user_id,
+            item_id: newUser.item_id,
+            token: response.data.access_token,
+          },
+          JWT_SECRET,
+          { expiresIn: '1d' }
+        );
+      } else {
+        return jsonwebtoken.sign(
+          {
+            username: user.username,
+            email: user.email,
+            role: user.role,
+            created_at: user.created_at,
+            user_id: user.user_id,
+            item_id: user.item_id,
+            token: response.data.access_token,
+          },
+          JWT_SECRET,
+          { expiresIn: '1d' }
+        );
+      }
     },
 
     async registerPushNotification(instance, { token }, { user, UserModel, logger }) {
