@@ -12,3 +12,4 @@ jspm_packages
 .build/*
 
 keys.sh
+.env
