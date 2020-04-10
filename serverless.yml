@@ -37,7 +37,7 @@ functions:
           method: post
           cors: true
   pushNotifications:
-    handler: lib/pushNotifications.handler  
+    handler: ./src/lib/pushNotifications.handler
     events:
       - schedule:
           name: push-notification-handler
