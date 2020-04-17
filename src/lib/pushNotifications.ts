@@ -27,7 +27,7 @@ const sendPushNotification = async () => {
       messages.push({
         to: token,
         sound: 'default',
-        body: 'HEY DO YOUR TRAINING',
+        body: "Don't forget to complete a habit today!",
       });
     }
   });
