@@ -46,6 +46,8 @@ const sendPushNotification = async () => {
   logger.info(`Succesfully sent notifcations to ${userPushTokens}`);
 };
 
-export default function handler(event: any, context: Context, callback: Callback) {
+export const handler = (event: any, context: Context, callback: Callback) => {
   sendPushNotification();
-}
+};
+
+export default handler;
