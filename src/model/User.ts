@@ -113,7 +113,7 @@ class UserModel implements DBModel {
         user_id,
         item_id,
       },
-      UpdateExpression: 'set push_token=:p, reminder=:r',
+      UpdateExpression: 'SET push_token=:p, reminder=:r',
       ExpressionAttributeValues: {
         ':p': push_token,
         ':r': reminder,
@@ -139,7 +139,7 @@ class UserModel implements DBModel {
         user_id,
         created_at,
       },
-      UpdateExpression: 'set push_notification_enabled=:p',
+      UpdateExpression: 'SET push_notification_enabled=:p',
       ExpressionAttributevalues: {
         ':p': set,
       },
