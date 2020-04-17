@@ -101,11 +101,7 @@ class UserModel implements DBModel {
    * @param reminder when to send user a reminder
    * @return Promise containing dynamodb action
    */
-  updatePushNotification(
-    { user_id, item_id }: { user_id: string; item_id: string },
-    push_token: string,
-    reminder = 'MORNING'
-  ) {
+  updatePushNotification({ user_id, item_id }: { user_id: string; item_id: string }, push_token: string, reminder = 0) {
     const params = {
       TableName: this.tableName,
       IndexName: 'PushNotificationIndex',
