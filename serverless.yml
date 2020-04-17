@@ -42,7 +42,7 @@ functions:
       - schedule:
           name: push-notification-handler
           description: 'Sends push notification reminding user to train.'
-          rate: rate(2 minutes)
+          rate: cron(0 13 * * ? *)
       - http:
           path: notification
           method: get
