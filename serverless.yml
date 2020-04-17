@@ -36,16 +36,16 @@ functions:
           path: graphql
           method: post
           cors: true
-  # pushNotifications:
-  #   handler: lib/pushNotifications.handler
-  #   events:
-  #     - schedule:
-  #         name: push-notification-handler
-  #         description: 'Sends push notification reminding user to train.'
-  #         rate: rate(10 days)
-  #     - http:
-  #         path: notification
-  #         method: get
+  pushNotifications:
+    handler: ./src/lib/pushNotifications.handler
+    events:
+      - schedule:
+          name: push-notification-handler
+          description: 'Sends push notification reminding user to train.'
+          rate: cron(0 13 * * ? *)
+      - http:
+          path: notification
+          method: get
 
 # order matters here for plugins
 plugins:

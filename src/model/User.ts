@@ -102,7 +102,7 @@ class UserModel implements DBModel {
    * @return Promise containing dynamodb action
    */
   updatePushNotification(
-    { user_id, created_at }: { user_id: string; created_at: string },
+    { user_id, item_id }: { user_id: string; item_id: string },
     push_token: string,
     reminder = 'MORNING'
   ) {
@@ -111,9 +111,9 @@ class UserModel implements DBModel {
       IndexName: 'PushNotificationIndex',
       Key: {
         user_id,
-        created_at,
+        item_id,
       },
-      UpdateExpression: 'set push_token=:p, reminder=:r',
+      UpdateExpression: 'SET push_token=:p, reminder=:r',
       ExpressionAttributeValues: {
         ':p': push_token,
         ':r': reminder,
@@ -139,7 +139,7 @@ class UserModel implements DBModel {
         user_id,
         created_at,
       },
-      UpdateExpression: 'set push_notification_enabled=:p',
+      UpdateExpression: 'SET push_notification_enabled=:p',
       ExpressionAttributevalues: {
         ':p': set,
       },

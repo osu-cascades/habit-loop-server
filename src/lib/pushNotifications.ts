@@ -27,7 +27,7 @@ const sendPushNotification = async () => {
       messages.push({
         to: token,
         sound: 'default',
-        body: 'HEY DO YOUR TRAINING',
+        body: "Don't forget to complete a habit today!",
       });
     }
   });
@@ -46,8 +46,8 @@ const sendPushNotification = async () => {
   logger.info(`Succesfully sent notifcations to ${userPushTokens}`);
 };
 
-export default {
-  handler: (event: any, context: Context, callback: Callback) => {
-    sendPushNotification();
-  },
+export const handler = (event: any, context: Context, callback: Callback) => {
+  sendPushNotification();
 };
+
+export default handler;

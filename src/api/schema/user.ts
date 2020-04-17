@@ -14,7 +14,7 @@ export default gql`
     signup(input: SignupInput!): String
     login(email: String!, password: String!): String
     cbtLogin(email: String!, password: String!): String
-    registerPushNotification(token: String!, reminder: Reminder): String @requireAuth(role: USER)
+    registerPushNotification(push_token: String!, reminder: Reminder): PushNotification @requireAuth(role: USER)
     createGroup(group_name: String!): String
     joinGroup(item_id: String!, group_name: String!): String
   }
@@ -45,5 +45,10 @@ export default gql`
     group_name: String!
     item_id: String!
     user_id: String!
+  }
+
+  type PushNotification {
+    push_token: String!
+    reminder: Reminder
   }
 `;

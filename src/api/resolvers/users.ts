@@ -174,9 +174,9 @@ const resolvers: IResolvers = {
       }
     },
 
-    async registerPushNotification(instance, { token }, { user, UserModel, logger }) {
+    async registerPushNotification(instance, { push_token }, { user, UserModel, logger }) {
       try {
-        const results = await UserModel.updatePushNotification(user, token);
+        const results = await UserModel.updatePushNotification(user, push_token);
         logger.info('added new token');
         return results;
       } catch (err) {
