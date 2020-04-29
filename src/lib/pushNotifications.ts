@@ -26,7 +26,7 @@ const sendPushNotification = async () => {
     '"We are what we repeatedly do. Excellence, then, is not an act, but a habit."' + completeHabitMessage,
     '"Motivation is what gets you started. Habit is what keeps you going."' + completeHabitMessage,
   ];
-  var randomMessage = notificationMessages[Math.floor(Math.random() * notificationMessages.length)];
+  let randomMessage = notificationMessages[Math.floor(Math.random() * notificationMessages.length)];
 
   _.forEach(userPushTokens, (token: any) => {
     if (!Expo.isExpoPushToken(token)) {
