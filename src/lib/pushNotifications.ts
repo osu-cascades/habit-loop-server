@@ -19,6 +19,15 @@ const sendPushNotification = async () => {
   }
 
   const messages: any = [];
+
+  const completeHabitMessage = "\n\nDon't forget to complete a habit today!";
+  const notificationMessages = [
+    '"A journey of 1000 miles starts with a single step."' + completeHabitMessage,
+    '"We are what we repeatedly do. Excellence, then, is not an act, but a habit."' + completeHabitMessage,
+    '"Motivation is what gets you started. Habit is what keeps you going."' + completeHabitMessage,
+  ];
+  let randomMessage = notificationMessages[Math.floor(Math.random() * notificationMessages.length)];
+
   _.forEach(userPushTokens, (token: any) => {
     if (!Expo.isExpoPushToken(token)) {
       logger.info(`Push token ${token} is not a valid Expo push token`);
@@ -27,7 +36,7 @@ const sendPushNotification = async () => {
       messages.push({
         to: token,
         sound: 'default',
-        body: "Don't forget to complete a habit today!",
+        body: randomMessage,
       });
     }
   });
