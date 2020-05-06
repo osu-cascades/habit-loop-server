@@ -120,7 +120,7 @@ const resolvers: IResolvers = {
     async cbtLogin(instance, { email, password }, ctx) {
       let response;
 
-      if (email != `${process.env.DEMO_EMAIL}` && password != `${process.env.DEMO_PASSWORD}`) {
+      if (email !== `${process.env.DEMO_EMAIL}` && password !== `${process.env.DEMO_PASSWORD}`) {
         response = await axios.post('https://api.cbtnuggets.com/auth-gateway/v1/login', {
           username: email,
           password: password,
@@ -142,8 +142,8 @@ const resolvers: IResolvers = {
           email: email,
           role: ['USER'],
           created_at: `${Date.now()}`,
-          user_id: response?.data?.user_id ?? uuidv4(),
-          item_id: `profile-${response?.data?.user_id ?? uuidv4()}`,
+          user_id: response?.data.user_id ?? uuidv4(),
+          item_id: `profile-${response?.data.user_id ?? uuidv4()}`,
         };
 
         await ctx.UserModel.create(newUser);
@@ -156,7 +156,7 @@ const resolvers: IResolvers = {
             created_at: newUser.created_at,
             user_id: newUser.user_id,
             item_id: newUser.item_id,
-            token: response?.data?.access_token,
+            token: response?.data.access_token ?? null,
           },
           JWT_SECRET,
           { expiresIn: '1d' }
@@ -170,7 +170,7 @@ const resolvers: IResolvers = {
             created_at: user.created_at,
             user_id: user.user_id,
             item_id: user.item_id,
-            token: response?.data?.access_token,
+            token: response?.data.access_token ?? null,
           },
           JWT_SECRET,
           { expiresIn: '1d' }
