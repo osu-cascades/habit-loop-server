@@ -30,14 +30,14 @@ provider:
 
 functions:
   graphql:
-    handler: src/app.graphql
+    handler: .build/src/app.graphql
     events:
       - http:
           path: graphql
           method: post
           cors: true
   pushNotifications:
-    handler: ./src/lib/pushNotifications.handler
+    handler: .build/src/lib/pushNotifications.handler
     events:
       - schedule:
           name: push-notification-handler
@@ -49,7 +49,6 @@ functions:
 
 # order matters here for plugins
 plugins:
-  - serverless-plugin-typescript
   # - serverless-dynamodb-local
   - serverless-offline
   - serverless-dotenv-plugin
