@@ -32,11 +32,15 @@ docker run -p 8000:8000 amazon/dynamodb-local
 
 Otherwise running dynamodb will require Java.
 
+#### A Quick Note About GitHub Actions and Secrets
+
+This service uses Github Actions, a CI/CD pipeline that will automatically build and test your commits if a pull request has been created. The Repo owner will be able to provide secrets for Redis, along with `demo account email` and `demo account password` upon request. These are stored in GitHub as secrets for GitHub Actions to use when building and testing, however, it is your responsibility to maintain a `.env` file for testing locally. We use the `serverless dotenv plugin` to access these keys through `process.env`
+
 #### Redis
 
-This service also uses redis which will need to be setup as well.
+This service also uses Redis, and the `host` and `password` keys can be provided upon request.
 
-Redis Labs is a good free way to get a redis instance up and running. Just sign up [here](https://redislabs.com/) and they'll walk you through the process pretty easily. What you'll need is the host and password. Those can be set in the environment whenever it should be deployed or started locally.
+**If you wish to set up Redis using keys of your own**: Redis Labs is a good, free way to get a Redis instance up and running. Just sign up [here](https://redislabs.com/) and they'll walk you through the process pretty easily. What you'll need is the host and password. Those can be set in the environment whenever it should be deployed or started locally.
 
 #### AWS Credentials
 
@@ -59,8 +63,6 @@ NODE_ENV=qa serverless deploy
 ```
 
 Make sure the AWS credentials are set up properly if you get errors.
-
-A common error I've run into is that deploying on macOS fails while deploying on a windows machine works. There's some weird stuff going on with bcrypt binaries or something but just mentioning it here in case the deploy doesn't work. [Reference](https://stackoverflow.com/questions/15809611/bcrypt-invalid-elf-header-when-running-node-app).
 
 ## Running Locally
 
@@ -87,6 +89,8 @@ The extension now supports graphQL queries so it's really easy to test if the la
 ## Debugging
 
 Sometimes the logs are responses are not very clear when hitting the endpoints from the app or manually. You can pass a graphQL query directly into the lambda through AWS.
+
+This service also makes use of **Reactotron** for debugging. To use Reactotron, just install it [here](https://infinite.red/reactotron) and have it running it before you start Expo on the front-end. This allows you to view GraphQL queries and mutations being sent and received.
 
 ## Built With
 
