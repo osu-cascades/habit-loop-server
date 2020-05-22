@@ -36,6 +36,16 @@ Otherwise running dynamodb will require Java.
 
 This service uses Github Actions, a CI/CD pipeline that will automatically build and test your commits if a pull request has been created. The Repo owner will be able to provide secrets for Redis, along with `demo account email` and `demo account password` upon request. These are stored in GitHub as secrets for GitHub Actions to use when building and testing, however, it is your responsibility to maintain a `.env` file for testing locally. We use the `serverless dotenv plugin` to access these keys through `process.env`
 
+#### Envrionment Variables:
+* REDIS_HOST - Hostname for Redis service
+* REDIS_PASSWORD - Password for Redis service
+* DEMO_EMAIL - Demo email address used for Apple's review of Habit Tracker
+* DEMO_PASSWORD - Demo password used for Apple's review of Habit Tracker
+* AWS credentials are set up through the AWS cli on dev's machine.
+
+#### GraphQL Endpoint
+* https://8n4s5ygsif.execute-api.us-east-1.amazonaws.com/qa/graphql
+
 #### Redis
 
 This service also uses Redis, and the `host` and `password` keys can be provided upon request.
